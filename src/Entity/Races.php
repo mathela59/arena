@@ -29,11 +29,7 @@ class Races
     private $Description;
 
     /**
-<<<<<<< HEAD
      * @ORM\Column(type="text")
-=======
-     * @ORM\Column(type="json_array")
->>>>>>> 980071d6e757d15f2fc80e01ef107e1376f2f0f0
      */
     private $Modifiers = [];
 
@@ -82,12 +78,12 @@ class Races
         return $this;
     }
 
-    public function getModifiers(): ?array
+    public function getModifiers(): ?string
     {
         return $this->Modifiers;
     }
 
-    public function setModifiers(array $Modifiers): self
+    public function setModifiers(?string $Modifiers): self
     {
         $this->Modifiers = $Modifiers;
 
