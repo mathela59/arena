@@ -20,19 +20,33 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class WarriorType extends AbstractType
 {
+    /**
+     * @var array
+     */
+    private $characteristics;
+
+    public function __construct(CharacteristicRepository $c_repo)
+    {
+        $this->c_repo = $c_repo;
+    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
+        $c_list = $this->c_repo->findAll();
         $builder
             ->add('Name', TextType::class)
-            ->add('Victories', IntegerType::class)
-            ->add('Defeats', IntegerType::class)
+            ->add('Victories', HiddenType::class, ['data'=>0, 'disabled'=>true])
+            ->add('Defeats', HiddenType::class, ['data'=>0, 'disabled'=>true])
             ->add('FightingStyle')
             ->add('Races', EntityType::class, [
                 'class' => Races::class
             ])
         ;
+
+        foreach($c_list as $c)
+        {
+            $builder->add($c->getName(), IntegerType::class, ['data'=>rand($c->getMinimum(),$c->getMaximum()), 'disabled'=>true]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)

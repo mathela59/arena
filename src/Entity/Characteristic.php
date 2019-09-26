@@ -38,6 +38,16 @@ class Characteristic
      */
     private $warriorCharacteristics;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $Minimum;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $Maximum;
+
     public function __construct()
     {
         $this->warriorCharacteristics = new ArrayCollection();
@@ -111,6 +121,30 @@ class Characteristic
                 $warriorCharacteristic->setCharacteristic(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMinimum(): ?int
+    {
+        return $this->Minimum;
+    }
+
+    public function setMinimum(int $Minimum): self
+    {
+        $this->Minimum = $Minimum;
+
+        return $this;
+    }
+
+    public function getMaximum(): ?int
+    {
+        return $this->Maximum;
+    }
+
+    public function setMaximum(int $Maximum): self
+    {
+        $this->Maximum = $Maximum;
 
         return $this;
     }
