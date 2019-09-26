@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\Warrior;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -19,22 +20,19 @@ class WarriorRepository extends ServiceEntityRepository
         parent::__construct($registry, Warrior::class);
     }
 
-    // /**
-    //  * @return Warrior[] Returns an array of Warrior objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('w')
-            ->andWhere('w.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('w.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+//    /**
+//     * @param int $user
+//     * @return Warrior[] Returns an array of Warrior objects
+//     */
+//    public function findByUserId(int $user)
+//    {
+//        return $this->createQueryBuilder('w')
+//            ->andWhere('w.user_id = :val')
+//            ->setParameter('val', $user)
+//            ->orderBy('w.id', 'ASC')
+//            ->getQuery()
+//            ->getResult();
+//    }
 
     /*
     public function findOneBySomeField($value): ?Warrior

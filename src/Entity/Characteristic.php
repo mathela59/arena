@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -30,6 +32,16 @@ class Characteristic
      * @ORM\Column(type="string", length=2)
      */
     private $ShortCode;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\WarriorCharacteristic", mappedBy="Characteristic")
+     */
+    private $warriorCharacteristics;
+
+    public function __construct()
+    {
+        $this->warriorCharacteristics = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -68,6 +80,37 @@ class Characteristic
     public function setShortCode(string $ShortCode): self
     {
         $this->ShortCode = $ShortCode;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|WarriorCharacteristic[]
+     */
+    public function getWarriorCharacteristics(): Collection
+    {
+        return $this->warriorCharacteristics;
+    }
+
+    public function addWarriorCharacteristic(WarriorCharacteristic $warriorCharacteristic): self
+    {
+        if (!$this->warriorCharacteristics->contains($warriorCharacteristic)) {
+            $this->warriorCharacteristics[] = $warriorCharacteristic;
+            $warriorCharacteristic->setCharacteristic($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWarriorCharacteristic(WarriorCharacteristic $warriorCharacteristic): self
+    {
+        if ($this->warriorCharacteristics->contains($warriorCharacteristic)) {
+            $this->warriorCharacteristics->removeElement($warriorCharacteristic);
+            // set the owning side to null (unless already changed)
+            if ($warriorCharacteristic->getCharacteristic() === $this) {
+                $warriorCharacteristic->setCharacteristic(null);
+            }
+        }
 
         return $this;
     }

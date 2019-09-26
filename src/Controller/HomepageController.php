@@ -2,9 +2,10 @@
 
 namespace App\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use App\Entity\Warrior;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class HomepageController extends AbstractController
 {
@@ -14,6 +15,12 @@ class HomepageController extends AbstractController
 	 */
 	public function homepage()
 	{
-		return $this->render('homepage/index.html.twig');
+	    $repos = $this->getDoctrine()->getRepository(Warrior::class);
+
+	    $warriors = $repos->findBy(["User"=>$this->getUser()->getId()]);
+
+		return $this->render('homepage/index.html.twig',['warriors'=>$warriors]);
+
+
 	}
 }

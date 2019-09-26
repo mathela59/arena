@@ -41,11 +41,6 @@ class Warrior
     private $Items;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Characteristic")
-     */
-    private $Characteristics;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $Victories;
@@ -60,10 +55,16 @@ class Warrior
      */
     private $User;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\WarriorCharacteristic", mappedBy="Warrior", orphanRemoval=true)
+     */
+    private $warriorCharacteristics;
+
     public function __construct()
     {
         $this->Items = new ArrayCollection();
         $this->Characteristics = new ArrayCollection();
+        $this->warriorCharacteristics = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -191,6 +192,37 @@ class Warrior
     public function setUser(?User $User): self
     {
         $this->User = $User;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|WarriorCharacteristic[]
+     */
+    public function getWarriorCharacteristics(): Collection
+    {
+        return $this->warriorCharacteristics;
+    }
+
+    public function addWarriorCharacteristic(WarriorCharacteristic $warriorCharacteristic): self
+    {
+        if (!$this->warriorCharacteristics->contains($warriorCharacteristic)) {
+            $this->warriorCharacteristics[] = $warriorCharacteristic;
+            $warriorCharacteristic->setWarrior($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWarriorCharacteristic(WarriorCharacteristic $warriorCharacteristic): self
+    {
+        if ($this->warriorCharacteristics->contains($warriorCharacteristic)) {
+            $this->warriorCharacteristics->removeElement($warriorCharacteristic);
+            // set the owning side to null (unless already changed)
+            if ($warriorCharacteristic->getWarrior() === $this) {
+                $warriorCharacteristic->setWarrior(null);
+            }
+        }
 
         return $this;
     }
