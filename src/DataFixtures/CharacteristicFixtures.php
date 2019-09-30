@@ -53,7 +53,7 @@ class CharacteristicFixtures extends Fixture
 
         //VI
         $c = new Characteristic();
-        $c->setName('Vivacity');
+        $c->setName('Speed');
         $c->setShortCode("VI");
         $c->setMinimum(3);
         $c->setMaximum(18);

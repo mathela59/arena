@@ -34,11 +34,6 @@ class Characteristic
     private $ShortCode;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\WarriorCharacteristic", mappedBy="Characteristic")
-     */
-    private $warriorCharacteristics;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $Minimum;
@@ -94,36 +89,6 @@ class Characteristic
         return $this;
     }
 
-    /**
-     * @return Collection|WarriorCharacteristic[]
-     */
-    public function getWarriorCharacteristics(): Collection
-    {
-        return $this->warriorCharacteristics;
-    }
-
-    public function addWarriorCharacteristic(WarriorCharacteristic $warriorCharacteristic): self
-    {
-        if (!$this->warriorCharacteristics->contains($warriorCharacteristic)) {
-            $this->warriorCharacteristics[] = $warriorCharacteristic;
-            $warriorCharacteristic->setCharacteristic($this);
-        }
-
-        return $this;
-    }
-
-    public function removeWarriorCharacteristic(WarriorCharacteristic $warriorCharacteristic): self
-    {
-        if ($this->warriorCharacteristics->contains($warriorCharacteristic)) {
-            $this->warriorCharacteristics->removeElement($warriorCharacteristic);
-            // set the owning side to null (unless already changed)
-            if ($warriorCharacteristic->getCharacteristic() === $this) {
-                $warriorCharacteristic->setCharacteristic(null);
-            }
-        }
-
-        return $this;
-    }
 
     public function getMinimum(): ?int
     {

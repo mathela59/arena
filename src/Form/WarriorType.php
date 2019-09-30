@@ -44,7 +44,7 @@ class WarriorType extends AbstractType
         ;
         foreach($c_list as $carac)
         {
-            $builder->add($carac->getName(),WarriorCharacteristicType::class);
+            $builder->add($carac->getName(),WarriorCharacteristicType::class, ["by_reference"=>false]);
         }
     }
 

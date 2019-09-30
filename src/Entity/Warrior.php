@@ -58,13 +58,13 @@ class Warrior
     private $User;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\WarriorCharacteristic")
+     * @ORM\OneToOne(targetEntity="App\Entity\WarriorCharacteristic",cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $Strength;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\WarriorCharacteristic")
+     * @ORM\OneToOne(targetEntity="App\Entity\WarriorCharacteristic", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $Constitution;

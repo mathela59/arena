@@ -5,9 +5,8 @@ namespace App\Controller;
 use App\Entity\Characteristic;
 use App\Entity\Warrior;
 use App\Entity\WarriorCharacteristic;
-use App\Form\WarriorCharacteristicType;
 use App\Form\WarriorType;
-use App\Repository\CharacteristicRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,7 +18,7 @@ class WarriorController extends AbstractController
      * @Route("/warrior/create", name="warrior_create")
      * @IsGranted("ROLE_USER")
      */
-    public function newWarrior(Request $request)
+    public function newWarrior(EntityManagerInterface $em, Request $request)
     {
 
         $wf = $this->createForm(WarriorType::class);
@@ -28,7 +27,15 @@ class WarriorController extends AbstractController
         $wf->handleRequest($request);
         if ($wf->isSubmitted() && $wf->isValid()) {
             $w = new Warrior();
+            /* @var Warrior */
             $data = $wf->getData();
+
+            $w->setName($data->getName());
+            $w->setFightingStyle($data->getFightingStyle());
+            $w->setRace($data->getRace());
+            $w->setVictories(0);
+            $w->setDefeats(0);
+            $w->setUser($this->getUser());
 
 
             //Let's work around the characteristics of the warrior
@@ -39,22 +46,19 @@ class WarriorController extends AbstractController
                 $car = new WarriorCharacteristic();
                 $car->setCharacteristic($c);
                 switch ($c->getName()) {
-                    case 'Strengh':
-                        $car->setValue($data->getStrengh()->getValue());
+                    case 'Strength':
+                        $car->setValue($data->getStrength()->getValue());
                         $w->setStrength($car);
                         break;
-                    case
-                    'Constitution':
+                    case 'Constitution':
                         $car->setValue($data->getConstitution()->getValue());
                         $w->setConstitution($car);
                         break;
-                    case
-                    'Dexterity':
+                    case 'Dexterity':
                         $car->setValue($data->getDexterity()->getValue());
                         $w->setDexterity($car);
                         break;
-                    case
-                    'Speed':
+                    case 'Speed':
                         $car->setValue($data->getSpeed()->getValue());
                         $w->setSpeed($car);
                         break;
@@ -62,16 +66,17 @@ class WarriorController extends AbstractController
                         $car->setValue($data->getArmor()->getValue());
                         $w->setArmor($car);
                         break;
-                    case
-                    'Intelligence':
+                    case 'Intelligence':
                         $car->setValue($data->getIntelligence()->getValue());
                         $w->setIntelligence($car);
                         break;
                 }
+                $em->persist($car);
             }
+            $em->persist($w);
+            $em->flush();
+            dump($w);
 
-            $this->get('session')->set('warrior', $w);
-            return $this->redirectToRoute('warrior_create_2');
         }
 
         if ($wf->isSubmitted() && !$wf->isValid()) {
@@ -92,6 +97,10 @@ class WarriorController extends AbstractController
     public
     function newWarriorStep2(Request $request)
     {
+
+        $w_repo = $this->getDoctrine()->getRepository(Warrior::class);
+        $w_list = $w_repo->findAll();
+
 
         dump($this->get('session')->get('warrior'));
         return $this->render('warrior/newWarriorStep2.html.twig', [
