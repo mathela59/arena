@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\WarriorCharacteristic;
+use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\StringType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -10,15 +11,20 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Tests\Extension\Core\DataTransformer\StringToFloatTransformerTest;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class WarriorCharacteristicEmbeddedFormType extends AbstractType
+class WarriorCharacteristicsType extends AbstractType
 {
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $c_list =
+
         $builder
-            ->add('Value')
-            ->add('carac', StringType::class)
-        ;
+                ->add('Value', IntegerType::class)
+                ->add('carac',StringType::class)
+            ;
+
+
+
     }
 
     public function configureOptions(OptionsResolver $resolver)

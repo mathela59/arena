@@ -15,6 +15,14 @@
             <header class="jumbotron my-6">
                 {% block page_title %}{% endblock %}
             </header>
+            {# read and display all flash messages #}
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="flash-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
 
             {% block body %}{% endblock %}
         </div>

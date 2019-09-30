@@ -51,14 +51,15 @@ class Warrior
     private $Defeats;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="warriors")
-     */
-    private $User;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\WarriorCharacteristic", mappedBy="Warrior", orphanRemoval=true)
      */
     private $warriorCharacteristics;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="warriors")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $User;
 
     public function __construct()
     {

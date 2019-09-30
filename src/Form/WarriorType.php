@@ -12,6 +12,8 @@ use App\Repository\RacesRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -38,15 +40,10 @@ class WarriorType extends AbstractType
             ->add('Victories', HiddenType::class, ['data'=>0, 'disabled'=>true])
             ->add('Defeats', HiddenType::class, ['data'=>0, 'disabled'=>true])
             ->add('FightingStyle')
-            ->add('Races', EntityType::class, [
+            ->add('Race', EntityType::class, [
                 'class' => Races::class
             ])
         ;
-
-        foreach($c_list as $c)
-        {
-            $builder->add($c->getName(), IntegerType::class, ['data'=>rand($c->getMinimum(),$c->getMaximum()), 'disabled'=>true]);
-        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
