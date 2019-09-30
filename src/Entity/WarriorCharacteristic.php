@@ -33,6 +33,7 @@ class WarriorCharacteristic
      */
     private $Value;
 
+
     public function getId(): ?int
     {
         return $this->id;

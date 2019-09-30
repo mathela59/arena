@@ -50,16 +50,48 @@ class Warrior
      */
     private $Defeats;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\WarriorCharacteristic", mappedBy="Warrior", orphanRemoval=true)
-     */
-    private $warriorCharacteristics;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="warriors")
      * @ORM\JoinColumn(nullable=false)
      */
     private $User;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\WarriorCharacteristic")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $Strength;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\WarriorCharacteristic")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $Constitution;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\WarriorCharacteristic", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $Intelligence;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\WarriorCharacteristic", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $Speed;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\WarriorCharacteristic", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $Dexterity;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\WarriorCharacteristic", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $Armor;
 
     public function __construct()
     {
@@ -135,31 +167,6 @@ class Warrior
         return $this;
     }
 
-    /**
-     * @return Collection|Characteristic[]
-     */
-    public function getCharacteristics(): Collection
-    {
-        return $this->Characteristics;
-    }
-
-    public function addCharacteristic(Characteristic $characteristic): self
-    {
-        if (!$this->Characteristics->contains($characteristic)) {
-            $this->Characteristics[] = $characteristic;
-        }
-
-        return $this;
-    }
-
-    public function removeCharacteristic(Characteristic $characteristic): self
-    {
-        if ($this->Characteristics->contains($characteristic)) {
-            $this->Characteristics->removeElement($characteristic);
-        }
-
-        return $this;
-    }
 
     public function getVictories(): ?int
     {
@@ -197,33 +204,74 @@ class Warrior
         return $this;
     }
 
-    /**
-     * @return Collection|WarriorCharacteristic[]
-     */
-    public function getWarriorCharacteristics(): Collection
+    public function getStrength(): ?WarriorCharacteristic
     {
-        return $this->warriorCharacteristics;
+        return $this->Strength;
     }
 
-    public function addWarriorCharacteristic(WarriorCharacteristic $warriorCharacteristic): self
+    public function setStrength(?WarriorCharacteristic $Strength): self
     {
-        if (!$this->warriorCharacteristics->contains($warriorCharacteristic)) {
-            $this->warriorCharacteristics[] = $warriorCharacteristic;
-            $warriorCharacteristic->setWarrior($this);
-        }
+        $this->Strength = $Strength;
 
         return $this;
     }
 
-    public function removeWarriorCharacteristic(WarriorCharacteristic $warriorCharacteristic): self
+    public function getConstitution(): ?WarriorCharacteristic
     {
-        if ($this->warriorCharacteristics->contains($warriorCharacteristic)) {
-            $this->warriorCharacteristics->removeElement($warriorCharacteristic);
-            // set the owning side to null (unless already changed)
-            if ($warriorCharacteristic->getWarrior() === $this) {
-                $warriorCharacteristic->setWarrior(null);
-            }
-        }
+        return $this->Constitution;
+    }
+
+    public function setConstitution(?WarriorCharacteristic $Constitution): self
+    {
+        $this->Constitution = $Constitution;
+
+        return $this;
+    }
+
+    public function getIntelligence(): ?WarriorCharacteristic
+    {
+        return $this->Intelligence;
+    }
+
+    public function setIntelligence(WarriorCharacteristic $Intelligence): self
+    {
+        $this->Intelligence = $Intelligence;
+
+        return $this;
+    }
+
+    public function getSpeed(): ?WarriorCharacteristic
+    {
+        return $this->Speed;
+    }
+
+    public function setSpeed(WarriorCharacteristic $Speed): self
+    {
+        $this->Speed = $Speed;
+
+        return $this;
+    }
+
+    public function getDexterity(): ?WarriorCharacteristic
+    {
+        return $this->Dexterity;
+    }
+
+    public function setDexterity(WarriorCharacteristic $Dexterity): self
+    {
+        $this->Dexterity = $Dexterity;
+
+        return $this;
+    }
+
+    public function getArmor(): ?WarriorCharacteristic
+    {
+        return $this->Armor;
+    }
+
+    public function setArmor(WarriorCharacteristic $Armor): self
+    {
+        $this->Armor = $Armor;
 
         return $this;
     }

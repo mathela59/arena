@@ -3,28 +3,25 @@
 namespace App\Form;
 
 use App\Entity\WarriorCharacteristic;
-use Doctrine\DBAL\Types\IntegerType;
-use Doctrine\DBAL\Types\StringType;
+use App\Repository\CharacteristicRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Tests\Extension\Core\DataTransformer\StringToFloatTransformerTest;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class WarriorCharacteristicsType extends AbstractType
+class WarriorCharacteristicType extends AbstractType
 {
+
+    public function __construct()
+    {
+    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $c_list =
-
         $builder
-                ->add('Value', IntegerType::class)
-                ->add('carac',StringType::class)
+            ->add('Value', IntegerType::class, ['data'=> rand(3,18)])
             ;
-
-
-
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -2,8 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Characteristic;
 use App\Entity\Warrior;
+use App\Entity\WarriorCharacteristic;
+use App\Form\WarriorCharacteristicType;
 use App\Form\WarriorType;
+use App\Repository\CharacteristicRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,17 +26,56 @@ class WarriorController extends AbstractController
 
         //Handle the form when submitted
         $wf->handleRequest($request);
-        if($wf->isSubmitted() && $wf->isValid())
-        {
-            $w= new Warrior();
-            $w=$wf->getData();
-            $this->get('session')->set('warrior',$w);
+        if ($wf->isSubmitted() && $wf->isValid()) {
+            $w = new Warrior();
+            $data = $wf->getData();
+
+
+            //Let's work around the characteristics of the warrior
+            $c_repo = $this->getDoctrine()->getRepository(Characteristic::class);
+            $c_list = $c_repo->findAll();
+
+            foreach ($c_list as $c) {
+                $car = new WarriorCharacteristic();
+                $car->setCharacteristic($c);
+                switch ($c->getName()) {
+                    case 'Strengh':
+                        $car->setValue($data->getStrengh()->getValue());
+                        $w->setStrength($car);
+                        break;
+                    case
+                    'Constitution':
+                        $car->setValue($data->getConstitution()->getValue());
+                        $w->setConstitution($car);
+                        break;
+                    case
+                    'Dexterity':
+                        $car->setValue($data->getDexterity()->getValue());
+                        $w->setDexterity($car);
+                        break;
+                    case
+                    'Speed':
+                        $car->setValue($data->getSpeed()->getValue());
+                        $w->setSpeed($car);
+                        break;
+                    case 'Armor':
+                        $car->setValue($data->getArmor()->getValue());
+                        $w->setArmor($car);
+                        break;
+                    case
+                    'Intelligence':
+                        $car->setValue($data->getIntelligence()->getValue());
+                        $w->setIntelligence($car);
+                        break;
+                }
+            }
+
+            $this->get('session')->set('warrior', $w);
             return $this->redirectToRoute('warrior_create_2');
         }
 
-        if($wf->isSubmitted() && !$wf->isValid())
-        {
-            $this->addFlash('error','formulaire soumis invalide');
+        if ($wf->isSubmitted() && !$wf->isValid()) {
+            $this->addFlash('error', 'formulaire soumis invalide');
         }
 
         return $this->render('warrior/newWarrior.html.twig', [
@@ -43,35 +86,16 @@ class WarriorController extends AbstractController
 
 
     /**
-     * @param Request $request
      * @Route("warrior/create-characteristics",name="warrior_create_2")
      * @isGranted("ROLE_USER")
      */
-    public function newWarriorStep2(Request $request)
+    public
+    function newWarriorStep2(Request $request)
     {
 
-        $wf = $this->createForm(WarriorCharacteristicsType::class);
-
-        //Handle the form when submitted
-        $wcf->handleRequest($request);
-        if($wcf->isSubmitted() && $wcf->isValid())
-        {
-            $w= $this->get('sessions')->get('warrior');
-            $w=$wf->getData();
-            dump($w);
-            $this->get('session')->set('warrior',$w);
-            return $this->redirectToRoute('warrior_create_2');
-        }
-
-        if($wf->isSubmitted() && !$wf->isValid())
-        {
-            $this->addFlash('error','formulaire soumis invalide');
-        }
-
-
+        dump($this->get('session')->get('warrior'));
         return $this->render('warrior/newWarriorStep2.html.twig', [
             'controller_name' => 'WarriorController',
-            'warriorForm' => $wf->createView()
         ]);
     }
 }
