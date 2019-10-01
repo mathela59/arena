@@ -1,0 +1,9 @@
+#!/bin/bash
+
+rm src/Migrations/*
+bin/console doctrine:database:drop --force
+bin/console doctrine:database:create
+bin/console make:migration
+bin/console doctrine:migrations:migrate
+bin/console doctrine:fixtures:load
+bin/console cache:clear

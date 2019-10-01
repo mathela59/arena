@@ -17,8 +17,8 @@ class WarriorCharacteristic
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Warrior")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Warrior", inversedBy="WarriorCharacteristic")
+     * @ORM\JoinColumn(name="warrior_id", referencedColumnName="id")
      */
     private $Warrior;
 

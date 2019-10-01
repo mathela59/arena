@@ -19,6 +19,7 @@ class HomepageController extends AbstractController
 
 	    $warriors = $repos->findBy(["User"=>$this->getUser()->getId()]);
 
+
 		return $this->render('homepage/index.html.twig',['warriors'=>$warriors]);
 
 

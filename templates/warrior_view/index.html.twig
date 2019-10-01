@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello WarriorViewController!{% endblock %}
+
+{% block body %}
+    <h1>{{ warrior.name }}</h1>
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th>Victories</th><td>{{ warrior.victories }}</td>
+                </tr>
+                <tr>
+                    <th>Defeats</th><td>{{ warrior.defeats }}</td>
+                </tr>
+                <tr>
+                    <th>Experience</th><td>{{ warrior.experience }}</td>
+                </tr>
+                <tr>
+                    <th>Life</th><td>{{ warrior.life }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col">
+            <table class="table">
+                <tbody>
+                {%  for carac in warrior.warriorCharacteristic %}
+                    <tr>
+                        <th>{{ carac.characteristic.name }}</th><td>{{ carac.value }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col"><a href="{{ url('warrior_heal',{id: warrior.id}) }}">Heal It</a></div>
+    </div>
+
+{% endblock %}

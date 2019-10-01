@@ -12,7 +12,7 @@ Homepage authenticated
     <h2>Liste des combattants :</h2>
     <ul>
     {% for w in warriors %}
-        <li>{{  w.name }}</li>
+        <li><a href="{{ url('warrior_view',{id: w.id}) }}">{{  w.name }} (lvl {{ w.level }})</a></li>
     {% endfor %}
     <ul>
     <a href="{{ url("warrior_create") }}">Create New Warrior</a>

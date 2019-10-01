@@ -4,23 +4,17 @@ namespace App\Form;
 
 use App\Entity\FightingStyle;
 use App\Entity\Races;
-use App\Entity\User;
-use App\Entity\Warrior;
 use App\Repository\CharacteristicRepository;
-use App\Repository\FightingStyleRepository;
-use App\Repository\RacesRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class WarriorType extends AbstractType
+class WarriorCreationType extends AbstractType
 {
     private $c_repo;
 
@@ -31,28 +25,31 @@ class WarriorType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $c_list = $this->c_repo->findAll();
+        $list = $this->c_repo->findAll();
 
         $builder
             ->add('Name', TextType::class)
-            ->add('Victories', HiddenType::class, ['data'=>0, 'disabled'=>true])
-            ->add('Defeats', HiddenType::class, ['data'=>0, 'disabled'=>true])
-            ->add('FightingStyle')
+            ->add('FightingStyle', EntityType::class, [
+                'class'=>FightingStyle::class,
+            ])
             ->add('Race', EntityType::class, [
                 'class' => Races::class,
             ])
         ;
-        foreach($c_list as $carac)
+        foreach ($list as $c_item)
         {
-            $builder->add($carac->getName(),WarriorCharacteristicType::class, ["by_reference"=>false]);
+            $builder->add($c_item->getName(),IntegerType::class, [
+                'data'=> rand($c_item->getMinimum(),$c_item->getMaximum())
+            ]);
         }
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Warrior::class,
+            // Configure your form options here
         ]);
+
     }
 
     public function getName()
