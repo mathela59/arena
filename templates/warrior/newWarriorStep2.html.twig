@@ -5,7 +5,11 @@
 {% block body %}
 
 
-
+    {{ form_start(warriorForm) }}
+    {{ form_widget(warriorForm) }}
+    <input type="submit" class="btn" value="Next"/>
+    <input type="button" class="btn" value="Reroll" onclick="location.reload()"/>
+    {{ form_end(warriorForm) }}
 
 {% endblock %}
-{% block page_title %}Warrior Creation{% endblock %}
+{% block page_title %}Warrior Creation - Step 2{% endblock %}

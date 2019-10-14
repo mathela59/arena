@@ -16,16 +16,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class WarriorCreationType extends AbstractType
 {
-    private $c_repo;
-
-    public function __construct(CharacteristicRepository $c_repo)
-    {
-        $this->c_repo=$c_repo;
-    }
+//    private $c_repo;
+//
+//    public function __construct(CharacteristicRepository $c_repo)
+//    {
+//        $this->c_repo=$c_repo;
+//    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $list = $this->c_repo->findAll();
+//        $list = $this->c_repo->findAll();
 
         $builder
             ->add('Name', TextType::class)
@@ -36,12 +36,12 @@ class WarriorCreationType extends AbstractType
                 'class' => Races::class,
             ])
         ;
-        foreach ($list as $c_item)
-        {
-            $builder->add($c_item->getName(),IntegerType::class, [
-                'data'=> rand($c_item->getMinimum(),$c_item->getMaximum())
-            ]);
-        }
+//        foreach ($list as $c_item)
+//        {
+//            $builder->add($c_item->getName(),IntegerType::class, [
+//                'data'=> rand($c_item->getMinimum(),$c_item->getMaximum())
+//            ]);
+//        }
     }
 
     public function configureOptions(OptionsResolver $resolver)

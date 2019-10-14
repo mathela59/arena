@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Characteristic;
 use App\Entity\Warrior;
 use App\Entity\WarriorCharacteristic;
+use App\Form\WarriorCharacteristicType;
 use App\Form\WarriorCreationType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -46,17 +47,17 @@ class WarriorCreationController extends AbstractController
             $em->persist($w);
             $em->flush();
 
-            //Now we can access the warrior Id so we can process characteristics
-            foreach ($list as $carac) {
-                $wc = new WarriorCharacteristic();
-                $wc->setCharacteristic($carac);
-                $wc->setWarrior($w);
-                $wc->setValue($data[$carac->getName()]);
-                $em->persist($wc);
-            }
-            $em->flush();
-
-            $this->redirectToRoute('homepage');
+//            //Now we can access the warrior Id so we can process characteristics
+//            foreach ($list as $carac) {
+//                $wc = new WarriorCharacteristic();
+//                $wc->setCharacteristic($carac);
+//                $wc->setWarrior($w);
+//                $wc->setValue($data[$carac->getName()]);
+//                $em->persist($wc);
+//            }
+//            $em->flush();
+            //$this->redirectTo('warrior_creation_step2',["warrior_current"=>$w]);
+            return $this->redirectToRoute("warrior_creation_step2",["warrior_current"=>$w], 302);
 
         }
 
@@ -71,21 +72,58 @@ class WarriorCreationController extends AbstractController
     }
 
 
+
     /**
-     * @Route("warrior/create-characteristics",name="warrior_create_2")
+     * @Route("warrior/create-characteristics",name="warrior_creation_step2")
      * @isGranted("ROLE_USER")
      */
     public
-    function newWarriorStep2(Request $request)
+    function newWarriorStep2(EntityManagerInterface $em, Request $request)
     {
+        //First we gather informations from the newly created Warrior
+        $w = $request->get('warrior');
 
-        $w_repo = $this->getDoctrine()->getRepository(Warrior::class);
-        $w_list = $w_repo->findAll();
+        //then we create the formCaracteristics.
+        $wc_form = $this->createForm(WarriorCharacteristicType::class);
+
+        //Handle the form when submitted
+        $wc_form->handleRequest($request);
+        if ($wc_form->isSubmitted() && $wc_form->isValid()) {
+
+            $c_repo = $em->getRepository(Characteristic::class);
+            $list = $c_repo->findAll();
+
+            $data = $wc_form->getData();
+
+            dump($data);
+            die("characteristics form submitted");
+            //return $this->redirectToRoute("warrior_creation_step3",["warrior_current"=>$w], 302);
+
+        }
+
+        if ($wf->isSubmitted() && !$wf->isValid()) {
+            $this->addFlash('error', 'formulaire soumis invalide');
+        }
 
 
-        dump($this->get('session')->get('warrior'));
         return $this->render('warrior/newWarriorStep2.html.twig', [
             'controller_name' => 'WarriorCreationController',
+            'warriorForm' => $wc_form->createView(),
+            'warrior' => $w,
         ]);
     }
+
+    /**
+     * @Route ("warrior/saveCharacteristics","warrior_creation_step3")
+     *
+     */
+    public function newWarriorStep3(Request $request)
+    {
+        $w = $request->get('warrior_current');
+
+        $this->addFlash('success', 'Welcome to your new Warrior !!');
+
+        return $this->redirectToRoute("warrior_view",["id"=>$w->getId()],302);
+    }
+
 }
