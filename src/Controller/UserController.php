@@ -57,6 +57,8 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $roles = $user->getRoles()[0];
+            $user->setRoles(explode(',',$roles));
             $userRepository->add($user);
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }
