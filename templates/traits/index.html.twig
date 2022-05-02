@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Traits index{% endblock %}
+
+{% block body %}
+    <h1>Traits index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>ShortCode</th>
+                <th>Description</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for trait in traits %}
+            <tr>
+                <td>{{ trait.id }}</td>
+                <td>{{ trait.name }}</td>
+                <td>{{ trait.shortCode }}</td>
+                <td>{{ trait.description }}</td>
+                <td>
+                    <a href="{{ path('app_traits_show', {'id': trait.id}) }}">show</a>
+                    <a href="{{ path('app_traits_edit', {'id': trait.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_traits_new') }}">Create new</a>
+{% endblock %}

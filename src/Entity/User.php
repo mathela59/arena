@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -29,6 +31,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string', length: 255)]
     private $email;
+
+    #[ORM\OneToMany(mappedBy: 'Coach', targetEntity: Warrior::class)]
+    private $warriors;
+
+    public function __construct()
+    {
+        $this->warriors = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -108,6 +118,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Warrior>
+     */
+    public function getWarriors(): Collection
+    {
+        return $this->warriors;
+    }
+
+    public function addWarrior(Warrior $warrior): self
+    {
+        if (!$this->warriors->contains($warrior)) {
+            $this->warriors[] = $warrior;
+            $warrior->setCoach($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWarrior(Warrior $warrior): self
+    {
+        if ($this->warriors->removeElement($warrior)) {
+            // set the owning side to null (unless already changed)
+            if ($warrior->getCoach() === $this) {
+                $warrior->setCoach(null);
+            }
+        }
 
         return $this;
     }
