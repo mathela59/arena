@@ -1,0 +1,19 @@
+<div class="menu">
+    <ul>
+        <li><a href="{{ path('app_index') }}">Arena</a></li>
+        <li><a href="{{ path('app_homepage') }}">Accueil</a></li>
+        <li>{% if is_granted('ROLE_ADMIN') %}
+                <a class="link" href="{{ path('app_user_index') }}">Users</a>
+            {% endif %}
+        </li>
+
+
+        <li>{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                <a class="link" href="{{ path('app_logout') }}">Se déconnecter</a>
+            {% else %}
+                <a class="link" href="{{ path('app_login') }}">Se connecter</a>
+            {% endif %}
+        </li>
+
+    </ul>
+</div>
