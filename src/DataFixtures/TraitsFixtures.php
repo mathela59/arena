@@ -13,7 +13,7 @@ class TraitsFixtures extends Fixture
         $trait = new Traits();
         $trait->setName("STRENGTH");
         $trait->setDescription("Strengh is directly linked to the damages you can do, the type of armor you wear, ...");
-        $trait->setShortCode("STE");
+        $trait->setShortCode("STR");
         $manager->persist($trait);
         unset($trait);
 

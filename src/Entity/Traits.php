@@ -22,6 +22,12 @@ class Traits
     #[ORM\Column(type: 'string', length: 255)]
     private $description;
 
+    public function __toString(): string
+    {
+        // TODO: Implement __toString() method.
+        return $this->getName();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

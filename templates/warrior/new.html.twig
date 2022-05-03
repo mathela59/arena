@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Warrior{% endblock %}
+
+{% block body %}
+    <h1>Create new Warrior</h1>
+
+    {{ include('warrior/_form.html.twig') }}
+
+    <a href="{{ path('app_warrior_index') }}">back to list</a>
+{% endblock %}

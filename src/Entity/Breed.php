@@ -22,6 +22,12 @@ class Breed
     #[ORM\Column(type: 'json', nullable: true)]
     private $modifiers = [];
 
+    public function __toString(): string
+    {
+        // TODO: Implement __toString() method.
+        return $this->getName();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

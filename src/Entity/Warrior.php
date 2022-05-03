@@ -28,13 +28,8 @@ class Warrior
     #[ORM\Column(type: 'integer')]
     private $Experience;
 
-    #[ORM\ManyToMany(targetEntity: Traits::class)]
-    private $Traits;
-
-    #[ORM\ManyToMany(targetEntity: Slots::class)]
-    private $Slots;
-
     #[ORM\ManyToOne(targetEntity: Breed::class)]
+    #[ORM\JoinColumn(nullable: false)]
     private $Breed;
 
     #[ORM\Column(type: 'integer')]
@@ -67,9 +62,6 @@ class Warrior
     public function __construct()
     {
         $this->skills = new ArrayCollection();
-        $this->Traits = new ArrayCollection();
-        $this->Slots = new ArrayCollection();
-        $this->Breed = new ArrayCollection();
         $this->equipment = new ArrayCollection();
         $this->combats = new ArrayCollection();
         $this->combats_extra = new ArrayCollection();
@@ -130,12 +122,12 @@ class Warrior
 
     public function getBreed(): ?Breed
     {
-        return $this->breed;
+        return $this->Breed;
     }
 
     public function setBreed(?Breed $breed): self
     {
-        $this->breed = $breed;
+        $this->Breed = $breed;
 
         return $this;
     }
@@ -172,70 +164,6 @@ class Warrior
     public function setExperience(int $Experience): self
     {
         $this->Experience = $Experience;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Traits>
-     */
-    public function getTraits(): Collection
-    {
-        return $this->Traits;
-    }
-
-    public function addTrait(Traits $trait): self
-    {
-        if (!$this->Traits->contains($trait)) {
-            $this->Traits[] = $trait;
-        }
-
-        return $this;
-    }
-
-    public function removeTrait(Traits $trait): self
-    {
-        $this->Traits->removeElement($trait);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Slots>
-     */
-    public function getSlots(): Collection
-    {
-        return $this->Slots;
-    }
-
-    public function addSlot(Slots $slot): self
-    {
-        if (!$this->Slots->contains($slot)) {
-            $this->Slots[] = $slot;
-        }
-
-        return $this;
-    }
-
-    public function removeSlot(Slots $slot): self
-    {
-        $this->Slots->removeElement($slot);
-
-        return $this;
-    }
-
-    public function addBreed(Breed $breed): self
-    {
-        if (!$this->Breed->contains($breed)) {
-            $this->Breed[] = $breed;
-        }
-
-        return $this;
-    }
-
-    public function removeBreed(Breed $breed): self
-    {
-        $this->Breed->removeElement($breed);
 
         return $this;
     }

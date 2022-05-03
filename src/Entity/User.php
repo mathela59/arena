@@ -40,6 +40,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->warriors = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        // TODO: Implement __toString() method.
+        return $this->getUsername();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

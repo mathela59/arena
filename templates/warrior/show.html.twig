@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Warrior{% endblock %}
+
+{% block body %}
+    <h1>Warrior</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ warrior.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ warrior.name }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ warrior.description }}</td>
+            </tr>
+            <tr>
+                <th>Experience</th>
+                <td>{{ warrior.Experience }}</td>
+            </tr>
+            <tr>
+                <th>Strength</th>
+                <td>{{ warrior.Strength }}</td>
+            </tr>
+            <tr>
+                <th>Speed</th>
+                <td>{{ warrior.Speed }}</td>
+            </tr>
+            <tr>
+                <th>Dexterity</th>
+                <td>{{ warrior.Dexterity }}</td>
+            </tr>
+            <tr>
+                <th>Constitution</th>
+                <td>{{ warrior.Constitution }}</td>
+            </tr>
+            <tr>
+                <th>Intelligence</th>
+                <td>{{ warrior.Intelligence }}</td>
+            </tr>
+            <tr>
+                <th>Will</th>
+                <td>{{ warrior.Will }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_warrior_index') }}">back to list</a>
+
+    <a href="{{ path('app_warrior_edit', {'id': warrior.id}) }}">edit</a>
+
+    {{ include('warrior/_delete_form.html.twig') }}
+{% endblock %}

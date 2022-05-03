@@ -22,6 +22,9 @@ class Sentence
     #[ORM\ManyToOne(targetEntity: FightStyle::class)]
     private $fightStyle;
 
+    #[ORM\Column(type: 'boolean')]
+    private $critic;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +62,18 @@ class Sentence
     public function setFightStyle(?FightStyle $fightStyle): self
     {
         $this->fightStyle = $fightStyle;
+
+        return $this;
+    }
+
+    public function getCritic(): ?bool
+    {
+        return $this->critic;
+    }
+
+    public function setCritic(bool $critic): self
+    {
+        $this->critic = $critic;
 
         return $this;
     }
