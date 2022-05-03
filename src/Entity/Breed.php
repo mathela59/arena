@@ -17,10 +17,10 @@ class Breed
     private $name;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $description;
+    private $Description;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $modifiers;
+    #[ORM\Column(type: 'json', nullable: true)]
+    private $modifiers = [];
 
     public function getId(): ?int
     {
@@ -41,22 +41,22 @@ class Breed
 
     public function getDescription(): ?string
     {
-        return $this->description;
+        return $this->Description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(string $Description): self
     {
-        $this->description = $description;
+        $this->Description = $Description;
 
         return $this;
     }
 
-    public function getModifiers(): ?string
+    public function getModifiers(): ?array
     {
         return $this->modifiers;
     }
 
-    public function setModifiers(string $modifiers): self
+    public function setModifiers(?array $modifiers): self
     {
         $this->modifiers = $modifiers;
 

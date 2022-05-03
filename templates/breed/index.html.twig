@@ -20,8 +20,8 @@
             <tr>
                 <td>{{ breed.id }}</td>
                 <td>{{ breed.name }}</td>
-                <td>{{ breed.description }}</td>
-                <td>{{ breed.modifiers }}</td>
+                <td>{{ breed.Description }}</td>
+                <td>{{ breed.modifiers ? breed.modifiers|json_encode : '' }}</td>
                 <td>
                     <a href="{{ path('app_breed_show', {'id': breed.id}) }}">show</a>
                     <a href="{{ path('app_breed_edit', {'id': breed.id}) }}">edit</a>

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Breed;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,9 +14,8 @@ class BreedType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('description')
-            ->add('modifiers')
-        ;
+            ->add('Description')
+            ->add('messtats',TextType::class, ["label"=>"modificateurs", "mapped"=>false, "data"=>json_encode($builder->getData()->getModifiers())]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -23,5 +23,6 @@ class BreedType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Breed::class,
         ]);
+
     }
 }

@@ -17,11 +17,11 @@
             </tr>
             <tr>
                 <th>Description</th>
-                <td>{{ breed.description }}</td>
+                <td>{{ breed.Description }}</td>
             </tr>
             <tr>
                 <th>Modifiers</th>
-                <td>{{ breed.modifiers }}</td>
+                <td>{{ breed.modifiers ? breed.modifiers|json_encode : '' }}</td>
             </tr>
         </tbody>
     </table>
