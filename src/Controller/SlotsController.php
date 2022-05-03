@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/slots')]
+#[Route('/admin/slots')]
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
 #[IsGranted('ROLE_ADMIN')]
 class SlotsController extends AbstractController
