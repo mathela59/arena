@@ -5,12 +5,15 @@ namespace App\Controller;
 use App\Entity\Warrior;
 use App\Form\WarriorType;
 use App\Repository\WarriorRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/warrior')]
+#[IsGranted('IS_AUTHENTICATED_FULLY')]
+#[IsGranted('ROLE_ADMIN')]
 class WarriorController extends AbstractController
 {
     #[Route('/', name: 'app_warrior_index', methods: ['GET'])]

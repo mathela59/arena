@@ -5,12 +5,15 @@ namespace App\Controller;
 use App\Entity\Skills;
 use App\Form\SkillsType;
 use App\Repository\SkillsRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/skills')]
+#[IsGranted('IS_AUTHENTICATED_FULLY')]
+#[IsGranted('ROLE_ADMIN')]
 class SkillsController extends AbstractController
 {
     #[Route('/', name: 'app_skills_index', methods: ['GET'])]
