@@ -25,17 +25,6 @@ class Warrior
     #[ORM\JoinColumn(nullable: false)]
     private $Coach;
 
-    #[ORM\ManyToOne(targetEntity: FightStyle::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private $FightStyle;
-
-    #[ORM\ManyToOne(targetEntity: Breed::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private $breed;
-
-    #[ORM\ManyToMany(targetEntity: Skills::class)]
-    private $skills;
-
     #[ORM\Column(type: 'integer')]
     private $Experience;
 
@@ -45,11 +34,45 @@ class Warrior
     #[ORM\ManyToMany(targetEntity: Slots::class)]
     private $Slots;
 
+    #[ORM\ManyToMany(targetEntity: Breed::class)]
+    private $Breed;
+
+    #[ORM\Column(type: 'integer')]
+    private $Strength;
+
+    #[ORM\Column(type: 'integer')]
+    private $Speed;
+
+    #[ORM\Column(type: 'integer')]
+    private $Dexterity;
+
+    #[ORM\Column(type: 'integer')]
+    private $Constitution;
+
+    #[ORM\Column(type: 'integer')]
+    private $Intelligence;
+
+    #[ORM\Column(type: 'integer')]
+    private $Will;
+
+    #[ORM\OneToMany(mappedBy: 'Warrior', targetEntity: Equipment::class)]
+    private $equipment;
+
+    #[ORM\OneToMany(mappedBy: 'first', targetEntity: Combat::class)]
+    private $combats;
+
+    #[ORM\OneToMany(mappedBy: 'Second', targetEntity: Combat::class)]
+    private $combats_extra;
+
     public function __construct()
     {
         $this->skills = new ArrayCollection();
         $this->Traits = new ArrayCollection();
         $this->Slots = new ArrayCollection();
+        $this->Breed = new ArrayCollection();
+        $this->equipment = new ArrayCollection();
+        $this->combats = new ArrayCollection();
+        $this->combats_extra = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -197,6 +220,184 @@ class Warrior
     public function removeSlot(Slots $slot): self
     {
         $this->Slots->removeElement($slot);
+
+        return $this;
+    }
+
+    public function addBreed(Breed $breed): self
+    {
+        if (!$this->Breed->contains($breed)) {
+            $this->Breed[] = $breed;
+        }
+
+        return $this;
+    }
+
+    public function removeBreed(Breed $breed): self
+    {
+        $this->Breed->removeElement($breed);
+
+        return $this;
+    }
+
+    public function getStrength(): ?int
+    {
+        return $this->Strength;
+    }
+
+    public function setStrength(int $Strength): self
+    {
+        $this->Strength = $Strength;
+
+        return $this;
+    }
+
+    public function getSpeed(): ?int
+    {
+        return $this->Speed;
+    }
+
+    public function setSpeed(int $Speed): self
+    {
+        $this->Speed = $Speed;
+
+        return $this;
+    }
+
+    public function getDexterity(): ?int
+    {
+        return $this->Dexterity;
+    }
+
+    public function setDexterity(int $Dexterity): self
+    {
+        $this->Dexterity = $Dexterity;
+
+        return $this;
+    }
+
+    public function getConstitution(): ?int
+    {
+        return $this->Constitution;
+    }
+
+    public function setConstitution(int $Constitution): self
+    {
+        $this->Constitution = $Constitution;
+
+        return $this;
+    }
+
+    public function getIntelligence(): ?int
+    {
+        return $this->Intelligence;
+    }
+
+    public function setIntelligence(int $Intelligence): self
+    {
+        $this->Intelligence = $Intelligence;
+
+        return $this;
+    }
+
+    public function getWill(): ?int
+    {
+        return $this->Will;
+    }
+
+    public function setWill(int $Will): self
+    {
+        $this->Will = $Will;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Equipment>
+     */
+    public function getEquipment(): Collection
+    {
+        return $this->equipment;
+    }
+
+    public function addEquipment(Equipment $equipment): self
+    {
+        if (!$this->equipment->contains($equipment)) {
+            $this->equipment[] = $equipment;
+            $equipment->setWarrior($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEquipment(Equipment $equipment): self
+    {
+        if ($this->equipment->removeElement($equipment)) {
+            // set the owning side to null (unless already changed)
+            if ($equipment->getWarrior() === $this) {
+                $equipment->setWarrior(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Combat>
+     */
+    public function getCombats(): Collection
+    {
+        return $this->combats;
+    }
+
+    public function addCombat(Combat $combat): self
+    {
+        if (!$this->combats->contains($combat)) {
+            $this->combats[] = $combat;
+            $combat->setFirst($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCombat(Combat $combat): self
+    {
+        if ($this->combats->removeElement($combat)) {
+            // set the owning side to null (unless already changed)
+            if ($combat->getFirst() === $this) {
+                $combat->setFirst(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Combat>
+     */
+    public function getCombatsExtra(): Collection
+    {
+        return $this->combats_extra;
+    }
+
+    public function addCombatsExtra(Combat $combatsExtra): self
+    {
+        if (!$this->combats_extra->contains($combatsExtra)) {
+            $this->combats_extra[] = $combatsExtra;
+            $combatsExtra->setSecond($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCombatsExtra(Combat $combatsExtra): self
+    {
+        if ($this->combats_extra->removeElement($combatsExtra)) {
+            // set the owning side to null (unless already changed)
+            if ($combatsExtra->getSecond() === $this) {
+                $combatsExtra->setSecond(null);
+            }
+        }
 
         return $this;
     }

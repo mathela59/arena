@@ -5,12 +5,15 @@ namespace App\Controller;
 use App\Entity\Traits;
 use App\Form\TraitsType;
 use App\Repository\TraitsRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/traits')]
+#[IsGranted('IS_AUTHENTICATED_FULLY')]
+#[IsGranted('ROLE_ADMIN')]
 class TraitsController extends AbstractController
 {
     #[Route('/', name: 'app_traits_index', methods: ['GET'])]

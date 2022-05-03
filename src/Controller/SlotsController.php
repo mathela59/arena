@@ -5,12 +5,15 @@ namespace App\Controller;
 use App\Entity\Slots;
 use App\Form\SlotsType;
 use App\Repository\SlotsRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/slots')]
+#[IsGranted('IS_AUTHENTICATED_FULLY')]
+#[IsGranted('ROLE_ADMIN')]
 class SlotsController extends AbstractController
 {
     #[Route('/', name: 'app_slots_index', methods: ['GET'])]

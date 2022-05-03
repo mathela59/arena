@@ -32,7 +32,7 @@ class BreedController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $stats = json_decode($form->get('messtats'),false);
+            $stats = json_decode($form->get('modifiers'),true);
             $breed->setModifiers($stats);
             $breedRepository->add($breed);
             return $this->redirectToRoute('app_breed_index', [], Response::HTTP_SEE_OTHER);
@@ -59,7 +59,7 @@ class BreedController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $stats = json_decode($form->get('messtats')->getViewData(),true);
+            $stats = json_decode($form->get('modifiers')->getViewData(),true);
             $breed->setModifiers($stats);
             $breedRepository->add($breed);
             return $this->redirectToRoute('app_breed_index', [], Response::HTTP_SEE_OTHER);

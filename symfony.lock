@@ -89,6 +89,15 @@
     "doctrine/sql-formatter": {
         "version": "1.1.2"
     },
+    "dunglas/doctrine-json-odm": {
+        "version": "1.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "0.1",
+            "ref": "c2ab78f625df0c89af5908d50a28602ff8c4919f"
+        }
+    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.8"
     },
@@ -287,6 +296,9 @@
         "version": "v6.0.3"
     },
     "symfony/security-http": {
+        "version": "v6.0.8"
+    },
+    "symfony/serializer": {
         "version": "v6.0.8"
     },
     "symfony/service-contracts": {

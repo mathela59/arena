@@ -13,7 +13,7 @@ class UserFixtures extends Fixture
         $u = new User();
         $u->setUsername('DCD');
         $u->setPassword('$2y$13$n32AXBB2Udsm8M8Jw6GEpuZ9PYZgIkRlenonYt6mMl2URytSFxuQq');
-        $u->setRoles(["ROLE_USER","Role_ADMIN"]);
+        $u->setRoles(["ROLE_USER","ROLE_ADMIN"]);
         $u->setEmail("mathieu.helary@gmail.com");
         $manager->persist($u);
         unset($u);
