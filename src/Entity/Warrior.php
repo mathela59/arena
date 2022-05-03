@@ -34,7 +34,7 @@ class Warrior
     #[ORM\ManyToMany(targetEntity: Slots::class)]
     private $Slots;
 
-    #[ORM\ManyToMany(targetEntity: Breed::class)]
+    #[ORM\ManyToOne(targetEntity: Breed::class)]
     private $Breed;
 
     #[ORM\Column(type: 'integer')]

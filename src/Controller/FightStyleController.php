@@ -32,7 +32,7 @@ class FightStyleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $stats = json_decode($form->get('modifiers'),true);
+            $stats = json_decode($form->get('modifiers')->getViewData(),true);
             $fightStyle->setModifiers($stats);
             $fightStyleRepository->add($fightStyle);
             return $this->redirectToRoute('app_fight_style_index', [], Response::HTTP_SEE_OTHER);
