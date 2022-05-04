@@ -22,8 +22,12 @@ class Warrior
     private $description;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'warriors')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private $Coach;
+
+    #[ORM\ManyToOne(targetEntity: FightStyle::class, inversedBy: 'warriors')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $FightStyle;
 
     #[ORM\Column(type: 'integer')]
     private $Experience;
@@ -32,7 +36,7 @@ class Warrior
     #[ORM\JoinColumn(nullable: false)]
     private $Breed;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $Strength;
 
     #[ORM\Column(type: 'integer')]

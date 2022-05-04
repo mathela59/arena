@@ -1,7 +1,8 @@
 <div class="menu">
     <ul>
         <li><a href="{{ path('app_index') }}">Arena</a></li>
-        <li><a href="{{ path('app_homepage') }}">Accueil</a></li>
+        <li><a href="{{ path('app_homepage') }}">Home</a></li>
+
         {% if is_granted('ROLE_ADMIN') %}
             <li>
                 <a class="link" href="{{ path('app_user_index') }}">Users</a>
@@ -15,12 +16,15 @@
 
             </li>
         {% endif %}
+        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+            <li><a href="{{ path('app_warrior_creation') }}">Create a warrior</a></li>
+        {% endif %}
 
 
         <li>{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                <a class="link" href="{{ path('app_logout') }}">Se déconnecter</a>
+                <a class="link" href="{{ path('app_logout') }}">Logout</a>
             {% else %}
-                <a class="link" href="{{ path('app_login') }}">Se connecter</a>
+                <a class="link" href="{{ path('app_login') }}">Login</a>
             {% endif %}
         </li>
 
