@@ -45,6 +45,7 @@ class WarriorController extends AbstractController
     #[Route('/{id}', name: 'app_warrior_show', methods: ['GET'])]
     public function show(Warrior $warrior): Response
     {
+        $warrior->processStats();
         return $this->render('warrior/show.html.twig', [
             'warrior' => $warrior,
         ]);
