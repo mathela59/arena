@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Warrior;
 use App\Form\WarriorType;
 use App\Repository\WarriorRepository;
+use App\Services\WarriorServicesController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,11 +44,14 @@ class WarriorController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_warrior_show', methods: ['GET'])]
-    public function show(Warrior $warrior): Response
+    public function show(Warrior $warrior, WarriorServicesController $warriorServices): Response
     {
-        $warrior->processStats();
+        $warriorProcessed = $warrior;
+        $warriorProcessed = $warriorServices->processStats($warriorProcessed);
+
         return $this->render('warrior/show.html.twig', [
             'warrior' => $warrior,
+            'warriorProcessed' => $warriorProcessed,
         ]);
     }
 

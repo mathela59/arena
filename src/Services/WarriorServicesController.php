@@ -32,7 +32,7 @@ class WarriorServicesController
     }
 
 
-    public function processStat(Warrior $warrior): Warrior
+    public function processStats(Warrior $warrior): Warrior
     {
         //Let's apply breedmodifiers
         $bm = $warrior->getBreed()->getModifiers();
