@@ -16,6 +16,12 @@ class BreedFixtures extends Fixture
         $b->setModifiers(null);
         $manager->persist($b);
 
+        $b =  new Breed();
+        $b->setName("Dwarf");
+        $b->setDescription("Dwarves");
+        $b->setModifiers(["CON"=>3,"SPE"=>-2]);
+        $manager->persist($b);
+
         $manager->flush();
     }
 }

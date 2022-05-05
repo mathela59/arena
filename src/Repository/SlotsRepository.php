@@ -64,15 +64,20 @@ class SlotsRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?Slots
+
+    /**
+     * @param $value
+     * @return Slots|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findOneByName($value): ?Slots
     {
         return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
+            ->andWhere('s.name = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
+
 }

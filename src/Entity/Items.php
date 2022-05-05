@@ -30,6 +30,10 @@ class Items
     #[ORM\OneToMany(mappedBy: 'item', targetEntity: Equipment::class)]
     private $equipment;
 
+    #[ORM\ManyToOne(targetEntity: Slots::class, inversedBy: 'items')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $Slot;
+
     public function __construct()
     {
         $this->equipment = new ArrayCollection();
@@ -114,6 +118,18 @@ class Items
                 $equipment->setItem(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlot(): ?Slots
+    {
+        return $this->Slot;
+    }
+
+    public function setSlot(?Slots $Slot): self
+    {
+        $this->Slot = $Slot;
 
         return $this;
     }
