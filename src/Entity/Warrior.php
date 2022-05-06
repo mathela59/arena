@@ -25,7 +25,7 @@ class Warrior
     #[ORM\JoinColumn(nullable: true)]
     private $Coach;
 
-    #[ORM\ManyToOne(targetEntity: FightStyle::class, inversedBy: 'warriors')]
+    #[ORM\ManyToOne(targetEntity: FightStyle::class)]
     #[ORM\JoinColumn(nullable: false)]
     private $FightStyle;
 
