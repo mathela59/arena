@@ -29,6 +29,7 @@ class ResetPasswordRequestRepository extends ServiceEntityRepository implements 
     }
 
     /**
+     * @codeCoverageIgnore
      * @throws ORMException
      * @throws OptimisticLockException
      */
@@ -41,6 +42,7 @@ class ResetPasswordRequestRepository extends ServiceEntityRepository implements 
     }
 
     /**
+     * @codeCoverageIgnore
      * @throws ORMException
      * @throws OptimisticLockException
      */
@@ -52,6 +54,14 @@ class ResetPasswordRequestRepository extends ServiceEntityRepository implements 
         }
     }
 
+    /**
+     * @param object $user
+     * @param \DateTimeInterface $expiresAt
+     * @param string $selector
+     * @param string $hashedToken
+     * @return ResetPasswordRequestInterface
+     * @codeCoverageIgnore
+     */
     public function createResetPasswordRequest(object $user, \DateTimeInterface $expiresAt, string $selector, string $hashedToken): ResetPasswordRequestInterface
     {
         return new ResetPasswordRequest($user, $expiresAt, $selector, $hashedToken);

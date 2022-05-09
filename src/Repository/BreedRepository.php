@@ -18,12 +18,17 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class BreedRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     * @codeCoverageIgnore
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Breed::class);
     }
 
     /**
+     * @codeCoverageIgnore
      * @throws ORMException
      * @throws OptimisticLockException
      */
@@ -36,6 +41,7 @@ class BreedRepository extends ServiceEntityRepository
     }
 
     /**
+     * @codeCoverageIgnore
      * @throws ORMException
      * @throws OptimisticLockException
      */

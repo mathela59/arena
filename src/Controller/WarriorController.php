@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Warrior;
 use App\Form\WarriorType;
 use App\Repository\WarriorRepository;
-use App\Services\WarriorServicesController;
+use App\Services\WarriorService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,7 +44,7 @@ class WarriorController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_warrior_show', methods: ['GET'])]
-    public function show(Warrior $warrior, WarriorServicesController $warriorServices): Response
+    public function show(Warrior $warrior, WarriorService $warriorServices): Response
     {
         $warriorProcessed = $warrior;
         $warriorProcessed = $warriorServices->processStats($warriorProcessed);

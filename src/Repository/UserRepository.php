@@ -27,6 +27,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
+     * @codeCoverageIgnore
      * @throws ORMException
      * @throws OptimisticLockException
      */
@@ -39,6 +40,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
+     * @codeCoverageIgnore
      * @throws ORMException
      * @throws OptimisticLockException
      */
@@ -51,6 +53,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
+     * @codeCoverageIgnore
      * Used to upgrade (rehash) the user's password automatically over time.
      */
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
@@ -82,6 +85,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     */
 
     /**
+     * @codeCoverageIgnore
      * Used to find a User by his username
      */
     public function findOneByUsername($value): ?User

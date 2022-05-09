@@ -24,6 +24,7 @@ class SlotsRepository extends ServiceEntityRepository
     }
 
     /**
+     * @codeCoverageIgnore
      * @throws ORMException
      * @throws OptimisticLockException
      */
@@ -36,6 +37,7 @@ class SlotsRepository extends ServiceEntityRepository
     }
 
     /**
+     * @codeCoverageIgnore
      * @throws ORMException
      * @throws OptimisticLockException
      */
@@ -66,6 +68,7 @@ class SlotsRepository extends ServiceEntityRepository
 
 
     /**
+     * @codeCoverageIgnore
      * @param $value
      * @return Slots|null
      * @throws \Doctrine\ORM\NonUniqueResultException

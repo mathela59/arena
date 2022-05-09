@@ -24,6 +24,7 @@ class TraitsRepository extends ServiceEntityRepository
     }
 
     /**
+     * @codeCoverageIgnore
      * @throws ORMException
      * @throws OptimisticLockException
      */
@@ -36,6 +37,7 @@ class TraitsRepository extends ServiceEntityRepository
     }
 
     /**
+     * @codeCoverageIgnore
      * @throws ORMException
      * @throws OptimisticLockException
      */

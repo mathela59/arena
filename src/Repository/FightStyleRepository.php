@@ -18,6 +18,10 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class FightStyleRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     * @codeCoverageIgnore
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, FightStyle::class);
@@ -26,6 +30,7 @@ class FightStyleRepository extends ServiceEntityRepository
     /**
      * @throws ORMException
      * @throws OptimisticLockException
+     * @codeCoverageIgnore
      */
     public function add(FightStyle $entity, bool $flush = true): void
     {
@@ -38,6 +43,7 @@ class FightStyleRepository extends ServiceEntityRepository
     /**
      * @throws ORMException
      * @throws OptimisticLockException
+     * @codeCoverageIgnore
      */
     public function remove(FightStyle $entity, bool $flush = true): void
     {

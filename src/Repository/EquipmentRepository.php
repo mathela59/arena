@@ -18,6 +18,10 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class EquipmentRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     * @codeCoverageIgnore
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Equipment::class);
@@ -26,6 +30,7 @@ class EquipmentRepository extends ServiceEntityRepository
     /**
      * @throws ORMException
      * @throws OptimisticLockException
+     * @codeCoverageIgnore
      */
     public function add(Equipment $entity, bool $flush = true): void
     {
@@ -38,6 +43,7 @@ class EquipmentRepository extends ServiceEntityRepository
     /**
      * @throws ORMException
      * @throws OptimisticLockException
+     * @codeCoverageIgnore
      */
     public function remove(Equipment $entity, bool $flush = true): void
     {

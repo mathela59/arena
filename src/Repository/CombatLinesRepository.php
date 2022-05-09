@@ -18,6 +18,10 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CombatLinesRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     * @codeCoverageIgnore
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, CombatLines::class);
@@ -26,6 +30,7 @@ class CombatLinesRepository extends ServiceEntityRepository
     /**
      * @throws ORMException
      * @throws OptimisticLockException
+     * @codeCoverageIgnore
      */
     public function add(CombatLines $entity, bool $flush = true): void
     {
@@ -38,6 +43,7 @@ class CombatLinesRepository extends ServiceEntityRepository
     /**
      * @throws ORMException
      * @throws OptimisticLockException
+     * @codeCoverageIgnore
      */
     public function remove(CombatLines $entity, bool $flush = true): void
     {
