@@ -14,21 +14,21 @@
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Admin<span
                                 class="navbar-toggler-icon"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a class="link" href="{{ path('app_user_index') }}">Users</a></li>
-                        <li><a class="link" href="{{ path('app_breed_index') }}">Breeds</a></li>
-                        <li><a class="link" href="{{ path('app_slots_index') }}">Slots</a></li>
-                        <li><a class="link" href="{{ path('app_traits_index') }}">Traits</a></li>
-                        <li><a class="link" href="{{ path('app_fight_style_index') }}">Fight
+                        <li class="nav-item"><a class="link" href="{{ path('app_user_index') }}">Users</a></li>
+                        <li class="nav-item"><a class="link" href="{{ path('app_breed_index') }}">Breeds</a></li>
+                        <li class="nav-item"><a class="link" href="{{ path('app_slots_index') }}">Slots</a></li>
+                        <li class="nav-item"><a class="link" href="{{ path('app_traits_index') }}">Traits</a></li>
+                        <li class="nav-item"><a class="link" href="{{ path('app_fight_style_index') }}">Fight
                                 Styles</a></li>
-                        <li><a class="link" href="{{ path('app_skills_index') }}">Skills</a></li>
-                        <li><a class="link" href="{{ path('app_sentence_index') }}">Sentences</a></li>
-                        <li><a class="link" href="{{ path('app_items_index') }}">Items</a></li>
-                        <li><a class="link" href="{{ path('app_warrior_index') }}">Warriors</a></li>
+                        <li class="nav-item"><a class="link" href="{{ path('app_skills_index') }}">Skills</a></li>
+                        <li class="nav-item"><a class="link" href="{{ path('app_sentence_index') }}">Sentences</a></li>
+                        <li class="nav-item"><a class="link" href="{{ path('app_items_index') }}">Items</a></li>
+                        <li class="nav-item"><a class="link" href="{{ path('app_warrior_index') }}">Warriors</a></li>
                     </ul>
                 </li>
 
             {% endif %}
-            <li class="nav-item nav-link">{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+            <li class="nav-item">{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                     <a class="nav-link" href="{{ path('app_logout') }}">Logout</a>
                 {% else %}
                     <a class="nav-link" href="{{ path('app_login') }}">Login</a>

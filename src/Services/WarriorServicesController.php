@@ -46,11 +46,21 @@ class WarriorServicesController
         {
             $warrior = $this->modifyTraits($warrior,$key,$value);
         }
-        //Let's apply EquipmentModifiers
-        //@TODO
 
         //Let's apply SkillsModifiers
         //@TODO
+
+
+        //Let's apply EquipmentModifiers
+        $equipment = $warrior->getEquipment();
+        foreach($equipment as $e) {
+            $em = $e->getItem()->getModifiers();
+            //@TODO => check if requirements are met
+            foreach ($em as $key=>$value)
+            {
+                $warrior = $this->modifyTraits($warrior,$key, $value);
+            }
+        }
 
         return $warrior;
     }
