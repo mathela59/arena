@@ -63,7 +63,18 @@ class WarriorServicesTest extends TestCase
         $this->assertEquals($w->getSpeed(),25);
         $this->assertEquals($w->getStrength(),0);
 
+        $item2 = new Items();
+        $item2->setSlot($slot);
+        $item2->setModifiers(["WIL"=>5,"STR"=>"18"]);
 
-        $this->assertTrue(true);
+        $e2 = new Equipment();
+        $e2->setItem($item2);
+        $e2->setSlot($slot);
+
+        $w->addEquipment($e2);
+
+        $ws->processStats($w);
+        $this->assertEquals($w->getWill(),15);
+        $this->assertEquals($w->getStrength(),8);
     }
 }
