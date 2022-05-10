@@ -31,7 +31,6 @@ class WarriorServicesTest extends TestCase
         $slot->setName('slotTest');
         $slot->setDescription('slotTest');
 
-
         $item = new Items();
         $item->setSlot($slot);
         $item->setDescription('ItemTest');
@@ -137,7 +136,6 @@ class WarriorServicesTest extends TestCase
         $ws = new WarriorService();
         $ws->processStats($w);
 
-//        dump($w);
         //Brings a collection of tests using modifiers
 
         $this->assertEquals($w->getIntelligence(), 10);
@@ -210,5 +208,68 @@ class WarriorServicesTest extends TestCase
 
         $this->assertEquals($w->getIntelligence(),12);
 
+    }
+
+    /**
+     * @covers \App\Services\WarriorService::processStats
+     * @covers \App\Services\WarriorService::modifyTraits
+     * @covers \App\Services\WarriorService::getChar
+     * @return void
+     */
+    public function testItShouldCalculateRatios(): void
+    {
+        //Complete definition of a warrior
+        $slot = new Slots();
+        $slot->setName('slotTest');
+        $slot->setDescription('slotTest');
+
+        $item = new Items();
+        $item->setSlot($slot);
+        $item->setDescription('ItemTest');
+        $item->setName('ItemTest');
+        $item->setModifiers(["INT" => 8, "STR" => -2]);
+        $item->setRequirements(["DEX" => 15]);
+
+        $breed = new Breed();
+        $breed->setModifiers(["SPE" => 3]);
+        $breed->setName("breedTest");
+
+        $f = new FightStyle();
+        $f->setName('FightStyleTest');
+        $f->setModifiers(["CON" => 2]);
+
+        $e = new Equipment();
+        $e->setSlot($slot);
+        $e->setItem($item);
+
+        $w = new Warrior();
+        $w->setName("WarriorTest");
+        $w->setWill(5);
+        $w->setIntelligence(7);
+        $w->setConstitution(18);
+        $w->setDexterity(15);
+        $w->setSpeed(9);
+        $w->setStrength(16);
+        $w->setBreed($breed);
+        $w->setFightStyle($f);
+        $w->addEquipment($e);
+
+        $baseW = clone $w;
+        $baseW->setName('TOTO');
+
+        $ws = new WarriorService();
+        $ws->processStats($w);
+        $ratios = $ws->calculateBaseRatiosAndHp($w);
+        $this->assertEquals($ratios['HP'],270);
+        $this->assertEquals($ratios['AC'],42.5);
+        $this->assertEquals($ratios['AT'],24.5);
+        $this->assertEquals($ratios['DE'],23);
+        $this->assertEquals($ratios['ES'],27);
+        $this->assertEquals($ratios['VI'],19.5);
+        $this->assertEquals($ratios['DG'],52.5);
+        $this->assertEquals($ratios['RE'],25);
+
+
+        $this->assertTrue(true);
     }
 }

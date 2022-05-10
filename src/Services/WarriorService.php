@@ -111,4 +111,27 @@ class WarriorService
 
         return $warrior;
     }
+
+
+    /**
+     * calculate initial HealthPoint according to the warrior Characteristics
+     * @param Warrior $warrior
+     * @return array
+     */
+    public function calculateBaseRatiosAndHp(Warrior $warrior): array
+    {
+        //$this->processStats($warrior);
+        $ratios = array();
+        $ratios['HP']=($warrior->getConstitution()*10)+($warrior->getStrength()*5);
+        $ratios['AC']=$warrior->getConstitution()+$warrior->getDexterity()+($warrior->getIntelligence()/2);
+        $ratios['AT']=$warrior->getStrength()+($warrior->getDexterity()/2)+($warrior->getSpeed()/4);
+        $ratios['DE']=$warrior->getSpeed()+($warrior->getDexterity()/2)+($warrior->getStrength()/4);
+        $ratios['ES']=$warrior->getSpeed()+($warrior->getDexterity()/2)+($warrior->getIntelligence()/2);
+        $ratios['VI']=$warrior->getSpeed()+($warrior->getIntelligence()/2);
+        $ratios['DG']=$warrior->getStrength()*($warrior->getDexterity()/4);
+        $ratios['RE']=$warrior->getConstitution()+$warrior->getWill();
+        return($ratios);
+    }
+
+
 }
