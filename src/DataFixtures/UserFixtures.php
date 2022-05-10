@@ -6,8 +6,16 @@ use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
+/**
+ * @codeCoverageIgnore
+ */
 class UserFixtures extends Fixture
 {
+    /**
+     * @param ObjectManager $manager
+     * @return void
+     * @codeCoverageIgnore
+     */
     public function load(ObjectManager $manager): void
     {
         $u = new User();

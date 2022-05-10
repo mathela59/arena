@@ -8,6 +8,12 @@ use Doctrine\Persistence\ObjectManager;
 
 class BreedFixtures extends Fixture
 {
+
+    /**
+     * @param ObjectManager $manager
+     * @return void
+     * @codeCoverageIgnore
+     */
     public function load(ObjectManager $manager): void
     {
         $b =  new Breed();

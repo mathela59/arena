@@ -8,6 +8,11 @@ use Doctrine\Persistence\ObjectManager;
 
 class TraitsFixtures extends Fixture
 {
+    /**
+     * @param ObjectManager $manager
+     * @return void
+     * @codeCoverageIgnore
+     */
     public function load(ObjectManager $manager): void
     {
         $trait = new Traits();

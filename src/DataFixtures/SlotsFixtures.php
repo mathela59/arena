@@ -8,6 +8,11 @@ use Doctrine\Persistence\ObjectManager;
 
 class SlotsFixtures extends Fixture
 {
+    /**
+     * @param ObjectManager $manager
+     * @return void
+     * @codeCoverageIgnore
+     */
     public function load(ObjectManager $manager): void
     {
         $s = new Slots();

@@ -11,6 +11,10 @@ use Doctrine\Persistence\ObjectManager;
 class ItemsFixtures extends Fixture implements DependentFixtureInterface
 {
 
+    /**
+     * @return string[]
+     * @codeCoverageIgnore
+     */
     public function getDependencies()
     {
         return [
@@ -18,6 +22,11 @@ class ItemsFixtures extends Fixture implements DependentFixtureInterface
         ];
     }
 
+    /**
+     * @param ObjectManager $manager
+     * @return void
+     * @codeCoverageIgnore
+     */
     public function load(ObjectManager $manager): void
     {
 
