@@ -36,7 +36,7 @@ class WarriorService
      * return the value of a stat using his shortcode(trigram)
      * @param Warrior $warrior
      * @param string $key
-     * @return int|null
+     * @return float|null
      */
     public function getChar(Warrior $warrior, string $key): ?int
     {
@@ -77,12 +77,10 @@ class WarriorService
 
         //Let's apply SkillsModifiers - Second
         $skills = $warrior->getSkills();
-        foreach($skills as $skill)
-        {
+        foreach ($skills as $skill) {
             $sm = $skill->getModifiers();
-            foreach($sm as $key=>$value)
-            {
-                $warrior = $this->modifyTraits($warrior,$key,$value);
+            foreach ($sm as $key => $value) {
+                $warrior = $this->modifyTraits($warrior, $key, $value);
             }
         }
 
@@ -122,16 +120,87 @@ class WarriorService
     {
         //$this->processStats($warrior);
         $ratios = array();
-        $ratios['HP']=($warrior->getConstitution()*10)+($warrior->getStrength()*5);
-        $ratios['AC']=$warrior->getConstitution()+$warrior->getDexterity()+($warrior->getIntelligence()/2);
-        $ratios['AT']=$warrior->getStrength()+($warrior->getDexterity()/2)+($warrior->getSpeed()/4);
-        $ratios['DE']=$warrior->getSpeed()+($warrior->getDexterity()/2)+($warrior->getStrength()/4);
-        $ratios['ES']=$warrior->getSpeed()+($warrior->getDexterity()/2)+($warrior->getIntelligence()/2);
-        $ratios['VI']=$warrior->getSpeed()+($warrior->getIntelligence()/2);
-        $ratios['DG']=$warrior->getStrength()*($warrior->getDexterity()/4);
-        $ratios['RE']=$warrior->getConstitution()+$warrior->getWill();
-        return($ratios);
+        $ratios['HP'] = $this->calculateBaseHPRatio($warrior);
+        $ratios['AC'] = $this->calculateBaseACRatio($warrior);
+        $ratios['AT'] =$this->calculateBaseATRatio($warrior);
+        $ratios['DE'] =$this->calculateBaseDERatio($warrior);
+        $ratios['ES'] =$this->calculateBaseESRatio($warrior);
+        $ratios['VI'] = $this->calculateBaseViRatio($warrior);
+        $ratios['DG'] =$this->calculateBaseDGRatio($warrior);
+        $ratios['RE'] = $this->calculateBaseRERatio($warrior);
+        return ($ratios);
     }
 
+    /**
+     * @param Warrior $warrior
+     * @return float
+     */
+    public function calculateBaseViRatio(Warrior $warrior)
+    {
+        return $warrior->getSpeed() + ($warrior->getIntelligence() / 2);
+    }
+
+    /***
+     * @param Warrior $warrior
+     * @return float
+     */
+    public function calculateBaseHPRatio(Warrior $warrior)
+    {
+        return ($warrior->getConstitution() * 10) + ($warrior->getStrength() * 5);
+    }
+
+    /**
+     * @param Warrior $warrior
+     * @return float
+     */
+    public function calculateBaseACRatio(Warrior $warrior)
+    {
+        return $warrior->getConstitution() + $warrior->getDexterity() + ($warrior->getIntelligence() / 2);
+    }
+
+    /**
+     * @param Warrior $warrior
+     * @return float
+     */
+    public function calculateBaseATRatio(Warrior $warrior)
+    {
+        return $warrior->getStrength() + ($warrior->getDexterity() / 2) + ($warrior->getSpeed() / 4);
+    }
+
+    /**
+     * @param Warrior $warrior
+     * @return float
+     */
+    public function calculateBaseDERatio(Warrior $warrior)
+    {
+        return $warrior->getSpeed() + ($warrior->getDexterity() / 2) + ($warrior->getStrength() / 4);
+    }
+
+    /**
+     * @param Warrior $warrior
+     * @return float
+     */
+    public function calculateBaseESRatio(Warrior $warrior)
+    {
+        return $warrior->getSpeed() + ($warrior->getDexterity() / 2) + ($warrior->getIntelligence() / 2);
+    }
+
+    /**
+     * @param Warrior $warrior
+     * @return float
+     */
+    public function calculateBaseDGRatio(Warrior $warrior)
+    {
+        return $warrior->getStrength() * ($warrior->getDexterity() / 4);
+    }
+
+    /**
+     * @param Warrior $warrior
+     * @return float
+     */
+    public function calculateBaseRERatio(Warrior $warrior)
+    {
+        return $warrior->getConstitution() + $warrior->getWill();
+    }
 
 }
