@@ -85,10 +85,8 @@ class Combat
 
     public function addCombatLine(CombatLines $combatLine): self
     {
-        if (!$this->combatLines->contains($combatLine)) {
             $this->combatLines[] = $combatLine;
             $combatLine->setCombat($this);
-        }
 
         return $this;
     }

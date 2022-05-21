@@ -5,7 +5,7 @@ Determiner le guerrier qui prends l'initiative.
 - On compare les ratios VI des deux opposants, le plus haut prends l'initiative.
 - Celui qui prends l'initiative, voit son ratios VI diminuer de la valeur du token.
 
-Quand l'un des deux opposants voit son niveau de VI descendre à zéro ou moins, on réinitialise les ratios VI => une minute de combat s'est écoulée.
+Quand l'un des deux opposants voit son niveau de VI descendre à zéro ou moins, on réinitialise les ratios VI , et on reboot le token (Rand(0,5)=> une minute de combat s'est écoulée.
 
 
 

@@ -49,32 +49,37 @@ class SentenceRepository extends ServiceEntityRepository
         }
     }
 
-    // /**
-    //  * @return Sentence[] Returns an array of Sentence objects
-    //  */
-    /*
-    public function findByExampleField($value)
+     /**
+      * @return Sentence[] Returns an array of Sentence objects
+      */
+
+    public function findByActionSorted($action): array
     {
         return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('s.action = :val')
+            ->setParameter('val', $action)
             ->orderBy('s.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Sentence
+
+
+    public function findOneByActionAndFightStyle($action,$fightStyleId=null,$critical=false): ?Sentence
     {
         return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('s.action = :val')
+            ->andWhere('s.fight_style_id = :val2 OR s.figth_style_id is null')
+            ->andWhere('s.critic = :val3')
+            ->setParameter('val', $action)
+            ->setParameter('val2', $fightStyleId)
+            ->setParameter('val3',$critical)
+            ->orderBy('RAND()')
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->setMaxResults(1)
+            ->getOneOrNullResult();
     }
-    */
+
 }

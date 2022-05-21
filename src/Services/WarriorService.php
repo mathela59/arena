@@ -120,14 +120,14 @@ class WarriorService
     {
         //$this->processStats($warrior);
         $ratios = array();
-        $ratios['HP'] = $this->calculateBaseHPRatio($warrior);
-        $ratios['AC'] = $this->calculateBaseACRatio($warrior);
-        $ratios['AT'] =$this->calculateBaseATRatio($warrior);
-        $ratios['DE'] =$this->calculateBaseDERatio($warrior);
-        $ratios['ES'] =$this->calculateBaseESRatio($warrior);
-        $ratios['VI'] = $this->calculateBaseViRatio($warrior);
-        $ratios['DG'] =$this->calculateBaseDGRatio($warrior);
-        $ratios['RE'] = $this->calculateBaseRERatio($warrior);
+        $ratios['HP'] = $this->calculateBaseHPRatio($warrior); //HealthPoint
+        $ratios['AC'] = $this->calculateBaseACRatio($warrior); // ArmorClass
+        $ratios['AT'] =$this->calculateBaseATRatio($warrior); // Attack Ratio
+        $ratios['DE'] =$this->calculateBaseDERatio($warrior); //Defense Ratio
+        $ratios['ES'] =$this->calculateBaseESRatio($warrior); //Dodge Ratio
+        $ratios['VI'] = $this->calculateBaseViRatio($warrior); //Initiative ratio
+        $ratios['DG'] =$this->calculateBaseDGRatio($warrior); // Damages ratio
+        $ratios['RE'] = $this->calculateBaseRERatio($warrior); //Resistance ratio
         return ($ratios);
     }
 

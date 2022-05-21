@@ -13,46 +13,46 @@ class Warrior
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $name;
+    private string $name;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $description;
+    private string $description;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'warriors')]
     #[ORM\JoinColumn(nullable: true)]
-    private $Coach;
+    private  $Coach;
 
     #[ORM\ManyToOne(targetEntity: FightStyle::class)]
     #[ORM\JoinColumn(nullable: false)]
-    private $FightStyle;
+    private  $FightStyle;
 
     #[ORM\Column(type: 'integer')]
-    private $Experience;
+    private int $Experience;
 
     #[ORM\ManyToOne(targetEntity: Breed::class)]
     #[ORM\JoinColumn(nullable: false)]
-    private $Breed;
+    private  $Breed;
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    private $Strength;
+    private int $Strength;
 
     #[ORM\Column(type: 'integer')]
-    private $Speed;
+    private int $Speed;
 
     #[ORM\Column(type: 'integer')]
-    private $Dexterity;
+    private int $Dexterity;
 
     #[ORM\Column(type: 'integer')]
-    private $Constitution;
+    private int $Constitution;
 
     #[ORM\Column(type: 'integer')]
-    private $Intelligence;
+    private int $Intelligence;
 
     #[ORM\Column(type: 'integer')]
-    private $Will;
+    private int $Will;
 
     #[ORM\OneToMany(mappedBy: 'Warrior', targetEntity: Equipment::class)]
     private $equipment;
@@ -62,6 +62,8 @@ class Warrior
 
     #[ORM\OneToMany(mappedBy: 'Second', targetEntity: Combat::class)]
     private $combats_extra;
+
+    private array $ratios;
 
     public function __construct()
     {
@@ -257,6 +259,10 @@ class Warrior
         return $this->equipment;
     }
 
+    /**
+     * @param Equipment $equipment
+     * @return $this
+     */
     public function addEquipment(Equipment $equipment): self
     {
         if (!$this->equipment->contains($equipment)) {
@@ -267,6 +273,10 @@ class Warrior
         return $this;
     }
 
+    /**
+     * @param Equipment $equipment
+     * @return $this
+     */
     public function removeEquipment(Equipment $equipment): self
     {
         if ($this->equipment->removeElement($equipment)) {
@@ -287,6 +297,10 @@ class Warrior
         return $this->combats;
     }
 
+    /**
+     * @param Combat $combat
+     * @return $this
+     */
     public function addCombat(Combat $combat): self
     {
         if (!$this->combats->contains($combat)) {
@@ -297,6 +311,10 @@ class Warrior
         return $this;
     }
 
+    /**
+     * @param Combat $combat
+     * @return $this
+     */
     public function removeCombat(Combat $combat): self
     {
         if ($this->combats->removeElement($combat)) {
@@ -317,6 +335,10 @@ class Warrior
         return $this->combats_extra;
     }
 
+    /**
+     * @param Combat $combatsExtra
+     * @return $this
+     */
     public function addCombatsExtra(Combat $combatsExtra): self
     {
         if (!$this->combats_extra->contains($combatsExtra)) {
@@ -327,6 +349,10 @@ class Warrior
         return $this;
     }
 
+    /**
+     * @param Combat $combatsExtra
+     * @return $this
+     */
     public function removeCombatsExtra(Combat $combatsExtra): self
     {
         if ($this->combats_extra->removeElement($combatsExtra)) {
@@ -337,5 +363,40 @@ class Warrior
         }
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRatios(): array
+    {
+        return $this->ratios;
+    }
+
+    /**
+     * @param array $ratios
+     */
+    public function setRatios(array $ratios): void
+    {
+        $this->ratios = $ratios;
+    }
+
+    /**
+     * @param string $key
+     * @return float
+     */
+    public function getOneRatio(string $key): float
+    {
+        return $this->ratios[$key];
+    }
+
+    /**
+     * @param string $key
+     * @param float $value
+     * @return void
+     */
+    public function setOneRatio(string $key, float $value): void
+    {
+        $this->ratios[$key]=$value;
     }
 }
