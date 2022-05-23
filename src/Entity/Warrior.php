@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\WarriorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: WarriorRepository::class)]
@@ -16,10 +17,10 @@ class Warrior
     private int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private string $name;
+    private ?string $name='';
 
     #[ORM\Column(type: 'string', length: 255)]
-    private string $description;
+    private ?string $description='';
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'warriors')]
     #[ORM\JoinColumn(nullable: true)]
@@ -30,29 +31,29 @@ class Warrior
     private  $FightStyle;
 
     #[ORM\Column(type: 'integer')]
-    private int $Experience;
+    private ?int $Experience=0;
 
     #[ORM\ManyToOne(targetEntity: Breed::class)]
     #[ORM\JoinColumn(nullable: false)]
     private  $Breed;
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    private int $Strength;
+    private ?int $Strength=0;
 
     #[ORM\Column(type: 'integer')]
-    private int $Speed;
+    private int $Speed=0;
 
     #[ORM\Column(type: 'integer')]
-    private int $Dexterity;
+    private int $Dexterity=0;
 
     #[ORM\Column(type: 'integer')]
-    private int $Constitution;
+    private int $Constitution=0;
 
     #[ORM\Column(type: 'integer')]
-    private int $Intelligence;
+    private int $Intelligence=0;
 
     #[ORM\Column(type: 'integer')]
-    private int $Will;
+    private int $Will=0;
 
     #[ORM\OneToMany(mappedBy: 'Warrior', targetEntity: Equipment::class)]
     private $equipment;
@@ -64,6 +65,15 @@ class Warrior
     private $combats_extra;
 
     private array $ratios;
+
+    #[ORM\ManyToMany(targetEntity: Skills::class)]
+    private $skills;
+
+    #[ORM\Column(type: 'integer')]
+    private $victories;
+
+    #[ORM\Column(type: 'integer')]
+    private $loss;
 
     public function __construct()
     {
@@ -398,5 +408,35 @@ class Warrior
     public function setOneRatio(string $key, float $value): void
     {
         $this->ratios[$key]=$value;
+    }
+
+    public function getVictories(): ?int
+    {
+        return $this->victories;
+    }
+
+    public function setVictories(int $victories): self
+    {
+        $this->victories = $victories;
+
+        return $this;
+    }
+
+    public function getLoss(): ?int
+    {
+        return $this->loss;
+    }
+
+    public function setLoss(int $loss): self
+    {
+        $this->loss = $loss;
+
+        return $this;
+    }
+
+
+    public static function getRepository(EntityManagerInterface $em)
+    {
+        return $em->getRepository(__CLASS__);
     }
 }

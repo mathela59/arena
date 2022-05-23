@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20220506133008 extends AbstractMigration
+final class Version20220522133858 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -57,10 +57,13 @@ final class Version20220506133008 extends AbstractMigration
         $this->addSql('CREATE TABLE traits (id INT NOT NULL, name VARCHAR(255) NOT NULL, short_code VARCHAR(3) NOT NULL, description VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE "user" (id INT NOT NULL, username VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649F85E0677 ON "user" (username)');
-        $this->addSql('CREATE TABLE warrior (id INT NOT NULL, coach_id INT DEFAULT NULL, fight_style_id INT NOT NULL, breed_id INT NOT NULL, name VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, experience INT NOT NULL, strength INT DEFAULT NULL, speed INT NOT NULL, dexterity INT NOT NULL, constitution INT NOT NULL, intelligence INT NOT NULL, will INT NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE warrior (id INT NOT NULL, coach_id INT DEFAULT NULL, fight_style_id INT NOT NULL, breed_id INT NOT NULL, name VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, experience INT NOT NULL, strength INT DEFAULT NULL, speed INT NOT NULL, dexterity INT NOT NULL, constitution INT NOT NULL, intelligence INT NOT NULL, will INT NOT NULL, victories INT NOT NULL, loss INT NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_2E47A14B3C105691 ON warrior (coach_id)');
         $this->addSql('CREATE INDEX IDX_2E47A14B17B98B4C ON warrior (fight_style_id)');
         $this->addSql('CREATE INDEX IDX_2E47A14BA8B4A30F ON warrior (breed_id)');
+        $this->addSql('CREATE TABLE warrior_skills (warrior_id INT NOT NULL, skills_id INT NOT NULL, PRIMARY KEY(warrior_id, skills_id))');
+        $this->addSql('CREATE INDEX IDX_12704E6F452AFEA4 ON warrior_skills (warrior_id)');
+        $this->addSql('CREATE INDEX IDX_12704E6F7FF61858 ON warrior_skills (skills_id)');
         $this->addSql('ALTER TABLE combat ADD CONSTRAINT FK_8D51E398E84D625F FOREIGN KEY (first_id) REFERENCES warrior (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE combat ADD CONSTRAINT FK_8D51E398FF961BCC FOREIGN KEY (second_id) REFERENCES warrior (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE combat_lines ADD CONSTRAINT FK_C124A93FFC7EEDB8 FOREIGN KEY (combat_id) REFERENCES combat (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
@@ -73,6 +76,8 @@ final class Version20220506133008 extends AbstractMigration
         $this->addSql('ALTER TABLE warrior ADD CONSTRAINT FK_2E47A14B3C105691 FOREIGN KEY (coach_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE warrior ADD CONSTRAINT FK_2E47A14B17B98B4C FOREIGN KEY (fight_style_id) REFERENCES fight_style (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE warrior ADD CONSTRAINT FK_2E47A14BA8B4A30F FOREIGN KEY (breed_id) REFERENCES breed (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE warrior_skills ADD CONSTRAINT FK_12704E6F452AFEA4 FOREIGN KEY (warrior_id) REFERENCES warrior (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE warrior_skills ADD CONSTRAINT FK_12704E6F7FF61858 FOREIGN KEY (skills_id) REFERENCES skills (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
 
     public function down(Schema $schema): void
@@ -84,6 +89,7 @@ final class Version20220506133008 extends AbstractMigration
         $this->addSql('ALTER TABLE sentence DROP CONSTRAINT FK_9D664ED517B98B4C');
         $this->addSql('ALTER TABLE warrior DROP CONSTRAINT FK_2E47A14B17B98B4C');
         $this->addSql('ALTER TABLE equipment DROP CONSTRAINT FK_D338D583126F525E');
+        $this->addSql('ALTER TABLE warrior_skills DROP CONSTRAINT FK_12704E6F7FF61858');
         $this->addSql('ALTER TABLE equipment DROP CONSTRAINT FK_D338D58359E5119C');
         $this->addSql('ALTER TABLE items DROP CONSTRAINT FK_E11EE94D59E5119C');
         $this->addSql('ALTER TABLE reset_password_request DROP CONSTRAINT FK_7CE748AA76ED395');
@@ -91,6 +97,7 @@ final class Version20220506133008 extends AbstractMigration
         $this->addSql('ALTER TABLE combat DROP CONSTRAINT FK_8D51E398E84D625F');
         $this->addSql('ALTER TABLE combat DROP CONSTRAINT FK_8D51E398FF961BCC');
         $this->addSql('ALTER TABLE equipment DROP CONSTRAINT FK_D338D583452AFEA4');
+        $this->addSql('ALTER TABLE warrior_skills DROP CONSTRAINT FK_12704E6F452AFEA4');
         $this->addSql('DROP SEQUENCE breed_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE combat_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE combat_lines_id_seq CASCADE');
@@ -117,5 +124,6 @@ final class Version20220506133008 extends AbstractMigration
         $this->addSql('DROP TABLE traits');
         $this->addSql('DROP TABLE "user"');
         $this->addSql('DROP TABLE warrior');
+        $this->addSql('DROP TABLE warrior_skills');
     }
 }

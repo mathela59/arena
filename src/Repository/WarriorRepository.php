@@ -6,6 +6,7 @@ use App\Entity\Warrior;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -53,22 +54,34 @@ class WarriorRepository extends ServiceEntityRepository
         }
     }
 
-    // /**
-    //  * @return Warrior[] Returns an array of Warrior objects
-    //  */
-    /*
-    public function findByExampleField($value)
+     /**
+      * @return Warrior[] Returns an array of Warrior objects
+      */
+    public function findOneRandomWarriorExceptThisOne($value=null)
     {
-        return $this->createQueryBuilder('w')
-            ->andWhere('w.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('w.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $randSql = "SELECT warrior.id FROM warrior WHERE warrior.id != :val ORDER BY RANDOM() LIMIT 1";
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        $rsm->addEntityResult(Warrior::class,'warrior');
+        $rsm->addFieldResult('warrior', 'id', 'id');
+        $randId = $this->getEntityManager()->createNativeQuery($randSql,$rsm)
+            ->setParameter("val",$value)
+            ->getResult();
+        dump($this->findById($randId[0]->getId()));
+        die();
+        return $this->findById($randId[0]->getId());
     }
-    */
+
+    public function findOneRandomWarrior()
+    {
+        $randSql = "SELECT warrior.id FROM warrior ORDER BY RANDOM() LIMIT 1";
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        $rsm->addEntityResult(Warrior::class,'warrior');
+        $rsm->addFieldResult('warrior', 'id', 'id');
+        $randId = $this->getEntityManager()->createNativeQuery($randSql,$rsm)
+            ->getResult();
+        return $this->find($randId[0]->getId());
+    }
+
 
     /*
     public function findOneBySomeField($value): ?Warrior

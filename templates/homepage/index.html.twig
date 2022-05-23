@@ -3,18 +3,51 @@
 {% block title %}Hello HomepageController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <style>
+        .example-wrapper {
+            margin: 1em auto;
+            max-width: 800px;
+            width: 95%;
+            font: 18px/1.5 sans-serif;
+        }
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+        .example-wrapper code {
+            background: #F5F5F5;
+            padding: 2px 6px;
+        }
+    </style>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/home/pictime/arena/src/Controller/HomepageController.php'|file_link(0) }}">src/Controller/HomepageController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/home/pictime/arena/templates/homepage/index.html.twig'|file_link(0) }}">templates/homepage/index.html.twig</a></code></li>
-    </ul>
-</div>
+    <div class="container">
+        <h1>Hello {{ app.user.username }}!</h1>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <td>Name</td>
+                <td>Breed</td>
+                <td>FightStyle</td>
+                <td>Experience</td>
+                <td>Victories</td>
+                <td>Loss</td>
+                <td>Actions</td>
+            </tr>
+            </thead>
+            <tbody>
+            {% for warrior in warriors %}
+            <tr>
+                <td>{{ warrior.name }}</td>
+                <td>{{ warrior.breed }}</td>
+                <td>{{ warrior.fightStyle }}</td>
+                <td>{{ warrior.experience }}</td>
+                <td>{{ warrior.victories }}</td>
+                <td>{{ warrior.loss }}</td>
+                <td>Kill - view - ??</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="container">
+        <a href="{{ url('app_combat_random') }}"><button type="button" class="btn btn-danger">Random fight !</button></a>
+    </div>
 {% endblock %}

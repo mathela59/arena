@@ -27,6 +27,11 @@ stop:
 	docker-compose down
 .PHONY: stop
 
+migrate:
+	symfony console make:migration
+	symfony console doctrine:migrations:migrate
+.PHONT: migrate
+
 
 
 

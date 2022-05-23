@@ -34,6 +34,7 @@ class WarriorCreationController extends AbstractController
 
     public function hydrateWarriorFromSession(Warrior $warrior,Warrior $sessionWarrior)
     {
+
         if($warrior->getName()=='')
         {
             $warrior->setName($sessionWarrior->getName());
@@ -70,6 +71,15 @@ class WarriorCreationController extends AbstractController
         {
             $warrior->setWill($sessionWarrior->getWill());
         }
+        if($warrior->getVictories()=='' || $warrior->getVictories()==0)
+        {
+            $warrior->setVictories($sessionWarrior->getVictories());
+        }
+        if($warrior->getLoss()=='' || $warrior->getLoss()==0)
+        {
+            $warrior->setLoss($sessionWarrior->getLoss());
+        }
+
 
         return $warrior;
     }
@@ -92,6 +102,9 @@ class WarriorCreationController extends AbstractController
             $warrior->setConstitution(0);
             $warrior->setIntelligence(0);
             $warrior->setWill(0);
+            $warrior->setVictories(0);
+            $warrior->setLoss(0);
+
 
             $session = $this->requestStack->getSession();
             $session->set('currentWarrior', $this->serializer->serialize($warrior, 'json'));

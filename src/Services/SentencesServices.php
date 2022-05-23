@@ -7,6 +7,7 @@ use App\Entity\Sentence;
 use App\Entity\Warrior;
 use App\Repository\SentenceRepository;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use phpDocumentor\Reflection\Types\Boolean;
 
 class SentencesServices
@@ -16,7 +17,8 @@ class SentencesServices
     private EntityManager $em;
     private SentenceRepository $sr;
 
-    public function __construct(EntityManager $entityManager, SentenceRepository $sentenceRepository)
+    public function __construct(EntityManagerInterface $entityManager,
+                                SentenceRepository $sentenceRepository)
     {
         $this->em = $entityManager;
         $this->sr = $sentenceRepository;

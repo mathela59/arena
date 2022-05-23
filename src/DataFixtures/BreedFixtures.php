@@ -19,7 +19,7 @@ class BreedFixtures extends Fixture
         $b =  new Breed();
         $b->setName("Human");
         $b->setDescription("Simply human");
-        $b->setModifiers(null);
+        $b->setModifiers([]);
         $manager->persist($b);
 
         $b =  new Breed();

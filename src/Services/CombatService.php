@@ -6,6 +6,7 @@ use App\Entity\Combat;
 use App\Entity\Warrior;
 use Container3uoFGkY\getCache_ValidatorExpressionLanguageService;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Entity;
 
 class CombatService
@@ -22,29 +23,30 @@ class CombatService
     private WarriorService $ws;
     private Combat $combat;
 
-    public function __construct(Warrior $opponent1, Warrior $opponent2, EntityManager $entityManager, SentencesServices $sentencesService, WarriorService $warriorService)
+    public function __construct( EntityManagerInterface $entityManager,
+                                 SentencesServices $sentencesService, WarriorService $warriorService)
     {
         $this->em = $entityManager;
         $this->ss = $sentencesService;
         $this->ws = $warriorService;
-        $this->combat = $this->initCombat($entityManager);
+    }
+
+    public function initCombat(Warrior $opponent1, Warrior $opponent2)
+    {
         $this->opponent1 = $opponent1;
+        dump($this->opponent1);
+//        dump($this->opponent2);
         $this->opponent2 = $opponent2;
         $this->damages[$opponent1->getId()] = 0;
         $this->damages[$opponent2->getId()] = 0;
 
-    }
-
-    public function initCombat(): Combat
-    {
         $c = new Combat();
         $c->setFirst($this->opponent1);
         $c->setSecond($this->opponent2);
         $c->setDate(new \DateTime('now'));
         $this->em->persist($c);
         $this->em->flush();
-
-        return $c;
+        $this->combat = $c;
     }
 
     public function generateCombat()
@@ -68,7 +70,7 @@ class CombatService
             $actionResult = $this->calculateAction($attacker);
             switch ($actionResult) {
                 case "AT":
-                    $this->resolveDamages(false, $attacker);
+                    $dmg = $this->resolveDamages(false, $attacker);
                     $sentence = $this->ss->attack($attacker);
                     $this->combat->addCombatLine($this->ss->convert($sentence, $attacker, $defender));
                     unset($sentence);
@@ -76,31 +78,32 @@ class CombatService
                     $this->combat->addCombatLine($this->ss->convert($sentence, $attacker, $defender));
                     break;
                 case "CAT" :
-                    $this->resolveDamages(true, $attacker);
+                    $dmg = $this->resolveDamages(true, $attacker);
                     $sentence = $this->ss->attack($attacker, true);
                     $this->combat->addCombatLine($this->ss->convert($sentence, $attacker, $defender));
                     unset($sentence);
                     $sentence = $this->ss->damage($attacker);
                     $this->combat->addCombatLine($this->ss->convert($sentence, $attacker, $defender));
+
                     break;
                 case "DE" :
                     $this->parry($defender);
-                    $sentence =  $this->ss->parry($defender);
-                    $this->combat->addCombatLine($this->ss->convert($sentence,$attacker,$defender));
+                    $sentence = $this->ss->parry($defender);
+                    $this->combat->addCombatLine($this->ss->convert($sentence, $attacker, $defender));
                     break;
                 case "ES" :
                     $this->dodge($defender);
-                    $sentence =  $this->ss->dodge($defender);
-                    $this->combat->addCombatLine($this->ss->convert($sentence,$attacker,$defender));
+                    $sentence = $this->ss->dodge($defender);
+                    $this->combat->addCombatLine($this->ss->convert($sentence, $attacker, $defender));
                     break;
                 case "CA" :
                     $this->counter($defender);
-                    $sentence =  $this->ss->counter($defender);
-                    $this->combat->addCombatLine($this->ss->convert($sentence,$attacker,$defender));
+                    $sentence = $this->ss->counter($defender);
+                    $this->combat->addCombatLine($this->ss->convert($sentence, $attacker, $defender));
                     break;
                 default:
                     $sentence = $this->ss->ambiant();
-                    $this->combat->addCombatLine($this->ss->convert($sentence,$attacker,$defender));
+                    $this->combat->addCombatLine($this->ss->convert($sentence, $attacker, $defender));
             };
             //Out condition
             if ($this->damages[$this->opponent1->getId()] >= $this->opponent1->ratios1['HP'] ||
@@ -242,7 +245,30 @@ class CombatService
 
     private function closeCombat()
     {
-        //@TODO - Actually does nothing - anticipate for futur evolutions
+        //check who is the winner
+        if ($this->opponent1->getOneRatio('HP') > $this->damages[$this->opponent1->getId()]) {
+            $winner = $this->opponent1;
+            $loser = $this->opponent2;
+        } else {
+            $winner = $this->opponent2;
+            $loser = $this->opponent1;
+        }
+
+        //add the last combat lines ant persist it
+        $this->combat->addCombatLine($this->ss->convert($this->ss->victory($winner), $winner, $loser));
+        $this->combat->addCombatLine($this->ss->convert($this->ss->closeCombat(), $winner, $loser));
+
+        $this->em->persist($this->combat);
+
+
+    }
+
+    /**
+     * @return Combat
+     */
+    public function getCombat(): Combat
+    {
+        return $this->combat;
     }
 
 
