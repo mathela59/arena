@@ -23,8 +23,8 @@ class CombatService
     private WarriorService $ws;
     private Combat $combat;
 
-    public function __construct( EntityManagerInterface $entityManager,
-                                 SentencesServices $sentencesService, WarriorService $warriorService)
+    public function __construct(EntityManagerInterface $entityManager,
+                                SentencesServices      $sentencesService, WarriorService $warriorService)
     {
         $this->em = $entityManager;
         $this->ss = $sentencesService;
@@ -34,11 +34,10 @@ class CombatService
     public function initCombat(Warrior $opponent1, Warrior $opponent2)
     {
         $this->opponent1 = $opponent1;
-        dump($this->opponent1);
-//        dump($this->opponent2);
         $this->opponent2 = $opponent2;
         $this->damages[$opponent1->getId()] = 0;
         $this->damages[$opponent2->getId()] = 0;
+        $this->token = -1;
 
         $c = new Combat();
         $c->setFirst($this->opponent1);
@@ -49,7 +48,7 @@ class CombatService
         $this->combat = $c;
     }
 
-    public function generateCombat()
+    public function generateCombat(bool $debug=false)
     {
         $this->opponent1 = $this->ws->processStats($this->opponent1);
         $this->opponent2 = $this->ws->processStats($this->opponent2);
@@ -72,7 +71,8 @@ class CombatService
                 case "AT":
                     $dmg = $this->resolveDamages(false, $attacker);
                     $sentence = $this->ss->attack($attacker);
-                    $this->combat->addCombatLine($this->ss->convert($sentence, $attacker, $defender));
+                    $this->combat->addCombatLine($this->ss->convert
+                    ($sentence, $attacker, $defender));
                     unset($sentence);
                     $sentence = $this->ss->damage($attacker);
                     $this->combat->addCombatLine($this->ss->convert($sentence, $attacker, $defender));
@@ -88,16 +88,25 @@ class CombatService
                     break;
                 case "DE" :
                     $this->parry($defender);
+                    $sentence = $this->ss->attack($attacker);
+                    $this->combat->addCombatLine($this->ss->convert
+                    ($sentence, $attacker, $defender));
                     $sentence = $this->ss->parry($defender);
                     $this->combat->addCombatLine($this->ss->convert($sentence, $attacker, $defender));
                     break;
                 case "ES" :
                     $this->dodge($defender);
+                    $sentence = $this->ss->attack($attacker);
+                    $this->combat->addCombatLine($this->ss->convert
+                    ($sentence, $attacker, $defender));
                     $sentence = $this->ss->dodge($defender);
                     $this->combat->addCombatLine($this->ss->convert($sentence, $attacker, $defender));
                     break;
                 case "CA" :
                     $this->counter($defender);
+                    $sentence = $this->ss->attack($attacker);
+                    $this->combat->addCombatLine($this->ss->convert
+                    ($sentence, $attacker, $defender));
                     $sentence = $this->ss->counter($defender);
                     $this->combat->addCombatLine($this->ss->convert($sentence, $attacker, $defender));
                     break;
@@ -106,8 +115,10 @@ class CombatService
                     $this->combat->addCombatLine($this->ss->convert($sentence, $attacker, $defender));
             };
             //Out condition
-            if ($this->damages[$this->opponent1->getId()] >= $this->opponent1->ratios1['HP'] ||
-                $this->damages[$this->opponent2->getId()] >= $this->ratios2['HP']) {
+            if ($this->damages[$this->opponent1->getId()] >=
+                $this->opponent1->getOneRatio('HP') ||
+                $this->damages[$this->opponent2->getId()] >=
+                $this->opponent2->getOneRatio('HP')) {
                 $allOpponentsAlive = false;
             }
 
@@ -139,14 +150,10 @@ class CombatService
         //affecting attacker and defender
         if ($this->opponent1->getId() == $attacker->getId()) {
             $attacker = $this->opponent1;
-            $ratiosAt = $this->ratios1;
             $defender = $this->opponent2;
-            $ratiosDe = $this->ratios2;
         } else {
             $attacker = $this->opponent2;
-            $ratiosAt = $this->ratios2;
             $defender = $this->opponent1;
-            $ratiosDe = $this->ratios1;
         }
 
         //check if a new phase needs to begin
@@ -160,9 +167,9 @@ class CombatService
 
 
         //Calcul Attack score
-        $attack = $ratiosAt['AT'] + rand(0, 100);
+        $attack = $attacker->getOneRatio('AT') + rand(0, 100);
         //calcul Defense score
-        $defense = $ratiosDe['DE'] + rand(0, 100);
+        $defense = $defender->getOneRatio('DE') + rand(0, 100);
 
 
         //If attack is greater than defense => damages calculation
@@ -213,7 +220,9 @@ class CombatService
         } else
             $damages = $attacker->getOneRatio('DG');
 
-        $this->damages[$defender->getId()] += $damages - $defender->getOneRatio('AC');
+        $this->damages[$defender->getId()] += $damages +
+            $attacker->getDexterity() -
+            $defender->getOneRatio('AC');
         if (($defender->getOneRatio('HP') - $this->damages[$defender->getId()]) < $defender->getOneRatio('HP') / 5) {
             //Resist dice
             if (rand(0, 100) < $defender->getOneRatio('RE'))
@@ -243,12 +252,16 @@ class CombatService
         $this->opponent2->setOneRatio('VI', $tmp);
     }
 
+    /**
+     * @throws \Doctrine\ORM\Exception\ORMException
+     */
     private function closeCombat()
     {
         //check who is the winner
         if ($this->opponent1->getOneRatio('HP') > $this->damages[$this->opponent1->getId()]) {
             $winner = $this->opponent1;
             $loser = $this->opponent2;
+
         } else {
             $winner = $this->opponent2;
             $loser = $this->opponent1;
@@ -256,11 +269,17 @@ class CombatService
 
         //add the last combat lines ant persist it
         $this->combat->addCombatLine($this->ss->convert($this->ss->victory($winner), $winner, $loser));
-        $this->combat->addCombatLine($this->ss->convert($this->ss->closeCombat(), $winner, $loser));
+        $this->combat->addCombatLines($this->ss->convertArray
+        ($this->ss->closeCombat(), $winner, $loser));
 
+        $this->combat->setWinner($winner->getId());
+        $winner->setVictories($winner->getVictories()+1);
+        $loser->setLoss($loser->getLoss()+1);
+
+        $this->em->persist($winner);
+        $this->em->persist($loser);
         $this->em->persist($this->combat);
-
-
+        $this->em->flush();
     }
 
     /**

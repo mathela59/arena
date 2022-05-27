@@ -41,7 +41,7 @@
                 <td>{{ warrior.experience }}</td>
                 <td>{{ warrior.victories }}</td>
                 <td>{{ warrior.loss }}</td>
-                <td>Kill - view - ??</td>
+                <td>Kill - view - <a href="{{ url('app_combat_list',{id: warrior.id}) }}">Combat List</a></td>
             </tr>
             {% endfor %}
             </tbody>

@@ -59,27 +59,24 @@ class WarriorRepository extends ServiceEntityRepository
       */
     public function findOneRandomWarriorExceptThisOne($value=null)
     {
-        $randSql = "SELECT warrior.id FROM warrior WHERE warrior.id != :val ORDER BY RANDOM() LIMIT 1";
+        $randSql = "SELECT warrior.id FROM warrior WHERE warrior.id != "
+            .$value." ORDER BY RANDOM() LIMIT 1";
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
-        $rsm->addEntityResult(Warrior::class,'warrior');
-        $rsm->addFieldResult('warrior', 'id', 'id');
-        $randId = $this->getEntityManager()->createNativeQuery($randSql,$rsm)
-            ->setParameter("val",$value)
-            ->getResult();
-        dump($this->findById($randId[0]->getId()));
-        die();
-        return $this->findById($randId[0]->getId());
+        $rsm->addScalarResult('id', 'id');
+        $query = $this->getEntityManager()->createNativeQuery($randSql,$rsm);
+        $randId = $query->getResult();
+
+        return $this->find($randId[0]['id']);
     }
 
     public function findOneRandomWarrior()
     {
         $randSql = "SELECT warrior.id FROM warrior ORDER BY RANDOM() LIMIT 1";
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
-        $rsm->addEntityResult(Warrior::class,'warrior');
-        $rsm->addFieldResult('warrior', 'id', 'id');
+        $rsm->addScalarResult('id', 'id');
         $randId = $this->getEntityManager()->createNativeQuery($randSql,$rsm)
             ->getResult();
-        return $this->find($randId[0]->getId());
+        return $this->find($randId[0]['id']);
     }
 
 

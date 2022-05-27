@@ -20,8 +20,14 @@ class CombatLines
     #[ORM\JoinColumn(nullable: false)]
     private $Combat;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $sortingKey;
+
+    public function __toString(): string
+    {
+        return $this->getText()."-".$this->getCombat()->getId().' - '
+            .$this->getSortingKey();
+    }
 
     public function getId(): ?int
     {

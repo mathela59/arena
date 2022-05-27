@@ -26,8 +26,12 @@ class Combat
     #[ORM\Column(type: 'datetime')]
     private $date;
 
-    #[ORM\OneToMany(mappedBy: 'Combat', targetEntity: CombatLines::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'Combat', targetEntity: CombatLines::class,
+        orphanRemoval: true, cascade: ['persist'])]
     private $combatLines;
+
+    #[ORM\Column(type: 'integer', nullable: true)]
+    private $winner;
 
     public function __construct()
     {
@@ -91,6 +95,15 @@ class Combat
         return $this;
     }
 
+    public function addCombatLines(array $combatLines): self
+    {
+        foreach($combatLines as $combatLine) {
+            $this->combatLines[] = $combatLine;
+            $combatLine->setCombat($this);
+        }
+        return $this;
+    }
+
     public function removeCombatLine(CombatLines $combatLine): self
     {
         if ($this->combatLines->removeElement($combatLine)) {
@@ -99,6 +112,18 @@ class Combat
                 $combatLine->setCombat(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getWinner(): ?int
+    {
+        return $this->winner;
+    }
+
+    public function setWinner(?int $winner): self
+    {
+        $this->winner = $winner;
 
         return $this;
     }

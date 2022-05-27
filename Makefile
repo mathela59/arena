@@ -22,6 +22,12 @@ start:
 	symfony server:start -d
 .PHONY: start
 
+start-debug:
+	docker-compose up -d
+	symfony server:stop
+	XDEBUG_MODE=debug && symfony server:start -d
+.PHONY: start-debug
+
 stop:
 	symfony server:stop
 	docker-compose down
@@ -30,7 +36,12 @@ stop:
 migrate:
 	symfony console make:migration
 	symfony console doctrine:migrations:migrate
-.PHONT: migrate
+.PHONY: migrate
+
+
+log:
+	symfony server:log
+.PHONY: log
 
 
 

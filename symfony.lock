@@ -101,6 +101,15 @@
             "ref": "c2ab78f625df0c89af5908d50a28602ff8c4919f"
         }
     },
+    "easycorp/easyadmin-bundle": {
+        "version": "4.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "3.0",
+            "ref": "b131e6cbfe1b898a508987851963fff485986285"
+        }
+    },
     "egulias/email-validator": {
         "version": "3.1.2"
     },
@@ -338,6 +347,9 @@
     "symfony/http-kernel": {
         "version": "v6.0.8"
     },
+    "symfony/intl": {
+        "version": "v6.0.8"
+    },
     "symfony/mailer": {
         "version": "6.0",
         "recipe": {
@@ -399,6 +411,9 @@
         "version": "v1.25.0"
     },
     "symfony/polyfill-php81": {
+        "version": "v1.25.0"
+    },
+    "symfony/polyfill-uuid": {
         "version": "v1.25.0"
     },
     "symfony/property-access": {
@@ -490,6 +505,9 @@
             "config/packages/twig.yaml",
             "templates/base.html.twig"
         ]
+    },
+    "symfony/uid": {
+        "version": "v6.0.3"
     },
     "symfony/validator": {
         "version": "6.0",

@@ -18,7 +18,7 @@ class SentencesServices
     private SentenceRepository $sr;
 
     public function __construct(EntityManagerInterface $entityManager,
-                                SentenceRepository $sentenceRepository)
+                                SentenceRepository     $sentenceRepository)
     {
         $this->em = $entityManager;
         $this->sr = $sentenceRepository;
@@ -36,9 +36,10 @@ class SentencesServices
      * @param bool $critical
      * @return Sentence
      */
-    public function attack(Warrior $attacker, bool $critical=false): Sentence
+    public function attack(Warrior $attacker, bool $critical = false): Sentence
     {
-        return $this->sr->findOneByActionAndFightStyle('ATT', $attacker->getFightStyle(),$critical);
+        return $this->sr->findOneByActionAndFightStyle('ATT',
+            $attacker->getFightStyle()->getId(), $critical);
     }
 
     /**
@@ -47,7 +48,8 @@ class SentencesServices
      */
     public function parry(Warrior $defender): Sentence
     {
-        return $this->sr->findOneByActionAndFightStyle('DEF', $defender->getFightStyle());
+        return $this->sr->findOneByActionAndFightStyle('DEF',
+            $defender->getFightStyle()->getId(), false);
     }
 
     /**
@@ -56,7 +58,8 @@ class SentencesServices
      */
     public function dodge(Warrior $defender): Sentence
     {
-        return $this->sr->findOneByActionAndFightStyle('DOD', $defender->getFightStyle());
+        return $this->sr->findOneByActionAndFightStyle('DOD',
+            $defender->getFightStyle()->getId(), false);
     }
 
     /**
@@ -65,7 +68,8 @@ class SentencesServices
      */
     public function counter(Warrior $defender): Sentence
     {
-        return $this->sr->findOneByActionAndFightStyle('RIP', $defender->getFightStyle());
+        return $this->sr->findOneByActionAndFightStyle('RIP',
+            $defender->getFightStyle()->getId(), false);
     }
 
     /**
@@ -74,7 +78,8 @@ class SentencesServices
      */
     public function damage(Warrior $attacker)
     {
-        return $this->sr->findOneByActionAndFightStyle('DAMAGES',$attacker->getFightStyle());
+        return $this->sr->findOneByActionAndFightStyle('DAMAGES',
+            $attacker->getFightStyle()->getId(), false);
     }
 
     /**
@@ -83,7 +88,8 @@ class SentencesServices
      */
     public function victory(Warrior $warrior): Sentence
     {
-        return $this->sr->findOneByActionAndFightStyle('VICTORY', $warrior->getFightStyle());
+        return $this->sr->findOneByActionAndFightStyle('VICTORY',
+            $warrior->getFightStyle()->getId(), false);
     }
 
     /**
@@ -121,9 +127,27 @@ class SentencesServices
     public function convert(Sentence $sentence, Warrior $attacker, Warrior $defender): CombatLines
     {
         $c = new CombatLines();
-        $text = str_replace('##ATT##',$attacker->getName(),$sentence);
-        $text = str_replace('##DEF##',$defender->getName(),$text);
+        $text = str_replace('##ATT##', $attacker->getName(), $sentence->getText());
+        $text = str_replace('##DEF##', $defender->getName(), $text);
         $c->setText($text);
         return $c;
+    }
+
+    public function convertArray(array   $sentences, Warrior $attacker,
+                                 Warrior $defender,string $debug=''): array
+    {
+        $result = array();
+        foreach ($sentences as $sentence) {
+            $c = new CombatLines();
+            $text = str_replace('##ATT##', $attacker->getName(), $sentence->getText());
+            $text = str_replace('##DEF##', $defender->getName(), $text);
+            if($debug!="" && $debug!=null)
+            {
+                $text.=$debug;
+            }
+            $c->setText($text);
+            $result[] = $c;
+        }
+        return $result;
     }
 }

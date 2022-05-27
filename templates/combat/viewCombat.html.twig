@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CombatController!{% endblock %}
+
+{% block body %}
+    <style>
+        .example-wrapper {
+            margin: 1em auto;
+            max-width: 800px;
+            width: 95%;
+            font: 18px/1.5 sans-serif;
+        }
+
+        .example-wrapper code {
+            background: #F5F5F5;
+            padding: 2px 6px;
+        }
+    </style>
+
+    <div class="container-fluid">
+        <h1>Combat</h1>
+        <div class="row">
+            <div class="col-sm">
+                {{ combat.first.name }} est un {{ combat.first.breed.name }}<br/>
+                Il combattra selon le style du {{ combat.first.fightStyle.name }}
+            </div>
+            <div class="col-sm">
+                Versus
+            </div>
+            <div class="col-sm">
+                {{ combat.second.name }} est un {{ combat.second.breed.name }}<br/>
+                Il combattra selon le style du {{ combat.second.fightStyle.name }}
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class=""container-fluid">
+    {% for line in combat.combatLines %}
+        <p>{{ line.text}}</p>
+    {% endfor %}
+    </div>
+{% endblock %}

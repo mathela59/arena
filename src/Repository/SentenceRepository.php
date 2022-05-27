@@ -6,6 +6,7 @@ use App\Entity\Sentence;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -49,9 +50,9 @@ class SentenceRepository extends ServiceEntityRepository
         }
     }
 
-     /**
-      * @return Sentence[] Returns an array of Sentence objects
-      */
+    /**
+     * @return Sentence[] Returns an array of Sentence objects
+     */
 
     public function findByActionSorted($action): array
     {
@@ -61,25 +62,25 @@ class SentenceRepository extends ServiceEntityRepository
             ->orderBy('s.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
 
-
-    public function findOneByActionAndFightStyle($action,$fightStyleId=null,$critical=false): ?Sentence
+    public function findOneByActionAndFightStyle($action, $fightStyleId = null, $critical = false): ?Sentence
     {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.action = :val')
-            ->andWhere('s.fight_style_id = :val2 OR s.figth_style_id is null')
-            ->andWhere('s.critic = :val3')
-            ->setParameter('val', $action)
-            ->setParameter('val2', $fightStyleId)
-            ->setParameter('val3',$critical)
-            ->orderBy('RAND()')
-            ->getQuery()
-            ->setMaxResults(1)
-            ->getOneOrNullResult();
+        $randSql = "SELECT sentence.id FROM sentence WHERE sentence.action = '" . $action . "'";
+        $randSql .= "AND (sentence.fight_style_id = " . $fightStyleId . " OR sentence.fight_style_id is null)";
+        if (!$critical)
+            $randSql .= " AND sentence.critic='false'";
+        else
+            $randSql .= " AND sentence.critic='true'";
+        $randSql .= " ORDER BY RANDOM() LIMIT 1";
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        $rsm->addScalarResult('id', 'id');
+        $query = $this->getEntityManager()->createNativeQuery($randSql, $rsm);
+        $randId = $query->getResult();
+
+        return $this->find($randId[0]['id']);
     }
 
 }
