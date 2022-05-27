@@ -65,6 +65,7 @@ class AdminDashboardController extends AbstractDashboardController
             Traits::class);
         yield MenuItem::linkToCrud('Warriors', 'fas fa-user-astronaut',
             Warrior::class);
+        yield MenuItem::linkToUrl('Arena','fas fa-home',$this->generateUrl('app_homepage'));
     }
 
     public function configureActions(): Actions
