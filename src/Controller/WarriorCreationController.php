@@ -84,7 +84,7 @@ class WarriorCreationController extends AbstractController
         return $warrior;
     }
 
-    #[Route('/warrior/creation', name: 'app_warrior_creation')]
+    #[Route('/warrior_creation', name: 'app_warrior_creation')]
     public function index(Request $request): Response
     {
         $warrior = new Warrior();
@@ -116,13 +116,9 @@ class WarriorCreationController extends AbstractController
             'warrior' => $warrior,
             'form' => $form,
         ]);
-
-        return $this->render('warrior_creation/index.html.twig', [
-            'controller_name' => 'WarriorCreationController',
-        ]);
     }
 
-    #[Route('warrior/creation/roll', name: 'app_warrior_creation_roll')]
+    #[Route('warrior_creation/roll', name: 'app_warrior_creation_roll')]
     public function roll(Request $request, WarriorRepository $warriorRepository): Response
     {
         $warrior = new Warrior();
@@ -142,12 +138,12 @@ class WarriorCreationController extends AbstractController
             'form' => $form,
         ]);
 
-        return $this->render('warrior_creation/index.html.twig', [
+        return $this->render('warrior/index.html.twig', [
             'controller_name' => 'WarriorCreationController',
         ]);
     }
 
-    #[Route('warrior/creation/roll/other', name: 'app_warrior_breed_and_fight_style')]
+    #[Route('warrior_creation/roll/other', name: 'app_warrior_breed_and_fight_style')]
     public function breedAndStyle(Request $request, WarriorRepository $warriorRepository): Response
     {
         $warrior = new Warrior();
@@ -173,7 +169,7 @@ class WarriorCreationController extends AbstractController
             'form' => $form,
         ]);
 
-        return $this->render('warrior_creation/index.html.twig', [
+        return $this->render('warrior/index.html.twig', [
             'controller_name' => 'WarriorCreationController',
         ]);
     }

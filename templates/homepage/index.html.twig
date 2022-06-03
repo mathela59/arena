@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomepageController!{% endblock %}
+{% block title %}Hello {{  app.user.username }}!{% endblock %}
 
 {% block body %}
     <style>
@@ -19,32 +19,7 @@
 
     <div class="container">
         <h1>Hello {{ app.user.username }}!</h1>
-
-        <table class="table">
-            <thead>
-            <tr>
-                <td>Name</td>
-                <td>Breed</td>
-                <td>FightStyle</td>
-                <td>Experience</td>
-                <td>Victories</td>
-                <td>Loss</td>
-                <td>Actions</td>
-            </tr>
-            </thead>
-            <tbody>
-            {% for warrior in warriors %}
-            <tr>
-                <td>{{ warrior.name }}</td>
-                <td>{{ warrior.breed }}</td>
-                <td>{{ warrior.fightStyle }}</td>
-                <td>{{ warrior.experience }}</td>
-                <td>{{ warrior.victories }}</td>
-                <td>{{ warrior.loss }}</td>
-                <td>Kill - view - <a href="{{ url('app_combat_list',{id: warrior.id}) }}">Combat List</a></td>
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        {% include('warrior/index.html.twig') %}
+        <button class="btn btn-red"><a href="{{ path('app_combat_random') }}">Random Fight</a></button>
     </div>
 {% endblock %}

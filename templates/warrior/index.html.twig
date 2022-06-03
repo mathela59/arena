@@ -1,0 +1,48 @@
+{% block body %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Experience</th>
+                <th>Strength</th>
+                <th>Speed</th>
+                <th>Dexterity</th>
+                <th>Constitution</th>
+                <th>Intelligence</th>
+                <th>Will</th>
+                <th>Victories</th>
+                <th>Loss</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for warrior in warriors %}
+            <tr>
+                <td>{{ warrior.id }}</td>
+                <td>{{ warrior.name }}</td>
+                <td>{{ warrior.description }}</td>
+                <td>{{ warrior.Experience }}</td>
+                <td>{{ warrior.Strength }}</td>
+                <td>{{ warrior.Speed }}</td>
+                <td>{{ warrior.Dexterity }}</td>
+                <td>{{ warrior.Constitution }}</td>
+                <td>{{ warrior.Intelligence }}</td>
+                <td>{{ warrior.Will }}</td>
+                <td>{{ warrior.victories }}</td>
+                <td>{{ warrior.loss }}</td>
+                <td>
+                    <a href="{{ path('app_warrior_show', {'id': warrior.id}) }}">show</a>
+                    <a href="{{ path('app_warrior_edit', {'id': warrior.id}) }}">edit</a>
+                    <a href="{{ path('app_combat_list', {'id': warrior.id}) }}">Combat List</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="13">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

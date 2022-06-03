@@ -34,7 +34,10 @@ class WarriorRollType extends AbstractType
             ->add('Will', IntegerType::class, ["data" => $this->rollDices()])
             ->add(
                 $builder->create('buttons', FormType::class, ["label"=>"","label_attr"=>["style"=>"display:none"],"inherit_data" => true])->add('submit', SubmitType::class, ["label" => "next", "attr" => ["class" => "btn btn-primary btn-sm"]])
-            ->add('reset', ResetType::class, ["label" => "Reroll", "attr" => ["class" => "btn btn-secondary btn-sm"]])
+            ->add('reset', ResetType::class, ["label" => "Reroll", "attr" =>
+                ["class" => "btn btn-secondary btn-sm",
+                    "onClick"=>'location.reload()'
+                ]])
             )
         ;
     }
